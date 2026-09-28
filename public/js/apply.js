@@ -17,12 +17,12 @@
   if (genderInput) genderInput.value = gender;
 
   if (categoryBadge) {
-    categoryBadge.className = `form-category-tag ${gender}`;
-    categoryBadge.innerHTML = gender === 'pria' ? '👨‍🍳 Lamaran Kategori Pria' : '👩‍🍳 Lamaran Kategori Wanita';
+    categoryBadge.className = 'form-role-badge';
+    categoryBadge.textContent = gender === 'pria' ? 'Formulir Laki-laki (Crew)' : 'Formulir Perempuan (Kasir)';
   }
 
   if (pageTitle) {
-    pageTitle.textContent = `Formulir Lamaran — ${gender === 'pria' ? 'Pria (Crew)' : 'Wanita (Kasir)'}`;
+    pageTitle.textContent = `Formulir Pendaftaran — ${gender === 'pria' ? 'Crew' : 'Kasir'}`;
   }
 
   // ATURAN POSISI PEKERJAAN:
@@ -30,17 +30,17 @@
   // Laki-laki: HANYA Crew
   const assignedPosition = gender === 'wanita' ? 'Kasir' : 'Crew';
   if (posisiDisplay) {
-    posisiDisplay.value = `${assignedPosition} (${gender === 'wanita' ? 'Khusus Wanita' : 'Khusus Pria'})`;
+    posisiDisplay.value = `${assignedPosition} (${gender === 'wanita' ? 'Khusus Perempuan' : 'Khusus Laki-laki'})`;
   }
   if (posisiInput) {
     posisiInput.value = assignedPosition;
   }
   if (posisiHint) {
-    posisiHint.textContent = `Posisi kerja otomatis ditetapkan: ${assignedPosition}.`;
+    posisiHint.textContent = `Posisi kerja ditetapkan: ${assignedPosition}.`;
   }
 
   if (submitBtn) {
-    submitBtn.className = `btn ${gender === 'pria' ? 'btn-orange' : 'btn-red'}`;
+    submitBtn.className = 'btn';
   }
 
   // Cek ketersediaan lowongan dari server
@@ -156,7 +156,7 @@
         infoBox.classList.add('active');
 
         // Hapus error jika ada
-        const card = fileInput.closest('.file-upload-card');
+        const card = fileInput.closest('.upload-card') || fileInput.closest('.file-upload-card');
         if (card) card.classList.remove('has-error');
       } else {
         infoBox.classList.remove('active');

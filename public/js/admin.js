@@ -279,44 +279,43 @@
         let filesHtml = '';
         if (item.files) {
           if (item.files.fotoKtp) {
-            filesHtml += `<a href="/api/admin/files/${encodeURIComponent(item.files.fotoKtp.storedFilename)}" target="_blank" class="doc-pill-link" title="Lihat Foto KTP">🪪 KTP</a> `;
+            filesHtml += `<a href="/api/admin/files/${encodeURIComponent(item.files.fotoKtp.storedFilename)}" target="_blank" class="doc-link" title="Lihat Foto KTP">🪪 KTP</a> `;
           }
           if (item.files.cv) {
-            filesHtml += `<a href="/api/admin/files/${encodeURIComponent(item.files.cv.storedFilename)}" target="_blank" class="doc-pill-link" title="Lihat CV">📑 CV</a> `;
+            filesHtml += `<a href="/api/admin/files/${encodeURIComponent(item.files.cv.storedFilename)}" target="_blank" class="doc-link" title="Lihat CV">📑 CV</a> `;
           }
           if (item.files.suratLamaran) {
-            filesHtml += `<a href="/api/admin/files/${encodeURIComponent(item.files.suratLamaran.storedFilename)}" target="_blank" class="doc-pill-link" title="Lihat Surat Lamaran">📄 Surat</a>`;
+            filesHtml += `<a href="/api/admin/files/${encodeURIComponent(item.files.suratLamaran.storedFilename)}" target="_blank" class="doc-link" title="Lihat Surat Lamaran">📄 Surat</a>`;
           }
         }
-        if (!filesHtml) filesHtml = '<span style="color:var(--slate-400);font-size:0.8rem;">-</span>';
+        if (!filesHtml) filesHtml = '<span style="color:var(--text-muted);font-size:0.8rem;">-</span>';
 
         return `
           <tr>
             <td>
-              <div style="font-weight:600; color:var(--slate-800);">${formattedDate}</div>
-              <div style="font-size:0.75rem; color:var(--slate-400);">${formattedTime} WIB</div>
+              <div style="font-weight:600; color:var(--secondary);">${formattedDate}</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">${formattedTime} WIB</div>
             </td>
             <td>
-              <span class="badge-gender ${item.jenisKelamin}">
-                ${item.jenisKelamin === 'pria' ? '👨 Pria' : '👩 Wanita'}
+              <span class="badge-tag ${posisiFixed === 'Crew' ? 'crew' : 'kasir'}">
+                ${posisiFixed === 'Crew' ? '👨 Crew' : '👩 Kasir'}
               </span>
             </td>
             <td>
-              <div style="font-weight:700; color:var(--slate-900);">${escapeHtml(item.namaLengkap)}</div>
-              <div style="font-size:0.78rem; color:var(--slate-500);">${item.usia ? item.usia + ' Tahun' : '-'}</div>
+              <div style="font-weight:700; color:var(--secondary);">${escapeHtml(item.namaLengkap)}</div>
+              <div style="font-size:0.78rem; color:var(--text-secondary);">${item.usia ? item.usia + ' Tahun' : '-'}</div>
             </td>
             <td>
-              <div style="font-weight:600; color:var(--slate-800);">${escapeHtml(phoneVal)}</div>
-              <div style="font-size:0.75rem; color:var(--slate-500);">${escapeHtml(item.email)}</div>
+              <div style="font-weight:600; color:var(--text-primary);">${escapeHtml(phoneVal)}</div>
+              <div style="font-size:0.75rem; color:var(--text-secondary);">${escapeHtml(item.email)}</div>
             </td>
             <td>
-              <div style="font-size:0.85rem; color:var(--slate-700); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(item.domisili || '')}">
+              <div style="font-size:0.85rem; color:var(--text-primary); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(item.domisili || '')}">
                 ${escapeHtml(item.domisili || '-')}
               </div>
             </td>
             <td>
-              <span class="badge-pos">${escapeHtml(posisiFixed)}</span>
-              <div style="font-size:0.75rem; color:var(--slate-500); margin-top:2px;">Ref: ${escapeHtml(item.referensi || '-')}</div>
+              <div style="font-size:0.85rem; font-weight:600; color:var(--text-primary);">${escapeHtml(item.referensi || '-')}</div>
             </td>
             <td>
               <div style="display:flex; flex-wrap:wrap; gap:4px;">
@@ -324,14 +323,14 @@
               </div>
             </td>
             <td style="text-align: right;">
-              <div class="action-buttons" style="justify-content: flex-end;">
-                <a href="${waLink}" target="_blank" class="btn-icon wa" title="Hubungi via WhatsApp">
-                  💬
+              <div style="display: flex; gap: 6px; justify-content: flex-end; align-items: center;">
+                <a href="${waLink}" target="_blank" class="doc-link" style="color:var(--success); font-weight:700;" title="Hubungi via WhatsApp">
+                  💬 WA
                 </a>
-                <button class="btn-icon detail-btn" data-id="${item.id}" title="Lihat Profil & Berkas Lengkap">
-                  👁️
+                <button class="btn-upload detail-btn" data-id="${item.id}" style="padding:4px 8px; font-size:0.75rem;" title="Lihat Profil & Berkas">
+                  👁️ Detail
                 </button>
-                <button class="btn-icon delete delete-btn" data-id="${item.id}" data-name="${escapeHtml(item.namaLengkap)}" title="Hapus Data">
+                <button class="btn-upload delete-btn" data-id="${item.id}" data-name="${escapeHtml(item.namaLengkap)}" style="padding:4px 8px; font-size:0.75rem; color:var(--danger); border-color:#FECACA;" title="Hapus Data">
                   🗑️
                 </button>
               </div>

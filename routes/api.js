@@ -137,8 +137,8 @@ const submitValidators = [
   body('jenisKelamin').isIn(['pria', 'wanita']).withMessage('Jenis kelamin tidak valid.'),
   body('namaLengkap').trim().isLength({ min: 3, max: 100 }).withMessage('Nama lengkap minimal 3 karakter.'),
   body('usia')
-    .isInt({ min: 17, max: 55 })
-    .withMessage('Usia harus berupa angka antara 17 hingga 55 tahun.'),
+    .isInt({ min: 19, max: 50 })
+    .withMessage('Usia minimal adalah 19 tahun.'),
   body('domisili').trim().isLength({ min: 3, max: 300 }).withMessage('Domisili tempat tinggal wajib diisi.'),
   body('email').trim().isEmail().withMessage('Format email tidak valid.').normalizeEmail(),
   body('noWa')

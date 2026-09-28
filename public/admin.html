@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard — Hisana Fried Chicken Cirebon</title>
-  <meta name="description" content="Panel Manajemen Rekrutmen Pelamar Hisana Fried Chicken Cirebon." />
+  <title>Admin Dashboard — Hisana Fried Chicken</title>
+  <meta name="description" content="Panel Manajemen Rekrutmen Pelamar Hisana Fried Chicken Cirebon & Indramayu." />
   
-  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍗</text></svg>">
   
   <!-- Google Fonts: Plus Jakarta Sans -->
@@ -14,50 +13,46 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- Stylesheets -->
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a href="/admin.html" class="brand-link">
-        <div class="brand-icon">🍗</div>
-        <div class="brand-text">
-          <div class="brand-title">HISANA <span>PANEL HRD</span></div>
-          <div class="brand-sub">Recruitment Management</div>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="/admin.html" class="brand-wrap">
+        <div class="brand-badge">HISANA</div>
+        <div class="brand-details">
+          <div class="brand-name">Panel HRD</div>
+          <div class="brand-sub">Recruitment Portal</div>
         </div>
       </a>
 
-      <div class="topbar-right" id="userControls">
-        <a href="/" class="admin-nav-link" target="_blank" title="Lihat Website Publik">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-          </svg>
+      <div class="navbar-right" id="userControls">
+        <a href="/" class="admin-nav-btn" target="_blank">
           Lihat Web
         </a>
         <div id="logoutWrap" style="display:none">
-          <button id="logoutBtn" class="btn btn-outline" style="padding: 6px 14px; font-size: 0.82rem; color: var(--slate-200); border-color: rgba(255,255,255,0.2);">
+          <button id="logoutBtn" class="btn btn-outline" style="width: auto; padding: 6px 14px; font-size: 0.85rem;">
             Keluar
           </button>
         </div>
       </div>
     </div>
-  </header>
+  </nav>
 
   <main>
     <!-- VIEW 1: LOGIN ADMIN -->
-    <section id="loginView" class="admin-login-wrap">
-      <div class="form-card" style="padding: 2.25rem;">
-        <div style="text-align: center; margin-bottom: 1.75rem;">
-          <div style="width: 54px; height: 54px; border-radius: var(--radius-lg); background: var(--primary-orange-light); color: var(--primary-orange); display: inline-flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 0.75rem;">
+    <section id="loginView" style="max-width: 400px; margin: 3rem auto;">
+      <div class="form-card">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--primary-subtle); color: var(--primary); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 0.5rem;">
             🔒
           </div>
-          <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--slate-900);">Autentikasi HRD</h1>
-          <p style="font-size: 0.9rem; color: var(--slate-600); margin-top: 0.25rem;">
-            Masukkan kata sandi untuk mengelola data pelamar dan dokumen rekrutmen.
+          <h1 style="font-size: 1.4rem; font-weight: 800; color: var(--secondary);">Login HRD</h1>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
+            Masukkan kata sandi admin untuk mengelola data pelamar kerja.
           </p>
         </div>
 
@@ -66,17 +61,17 @@
         <form id="loginForm">
           <div class="field">
             <label for="password">Password Admin</label>
-            <div class="password-input-wrap">
-              <input type="password" id="password" name="password" class="input-control" placeholder="Masukkan password..." required />
-              <button type="button" id="togglePasswordBtn" class="password-toggle-btn" title="Lihat/Sembunyikan password">
+            <div style="position: relative;">
+              <input type="password" id="password" name="password" class="input-control" placeholder="Masukkan password..." required style="padding-right: 40px;" />
+              <button type="button" id="togglePasswordBtn" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1rem; color: #888888;" title="Lihat/Sembunyikan password">
                 👁️
               </button>
             </div>
           </div>
 
           <div style="margin-top: 1.5rem;">
-            <button type="submit" id="btnLogin" class="btn btn-orange">
-              Masuk ke Dashboard &rarr;
+            <button type="submit" id="btnLogin" class="btn">
+              Masuk Dashboard &rarr;
             </button>
           </div>
         </form>
@@ -85,119 +80,98 @@
 
     <!-- VIEW 2: DASHBOARD ADMIN -->
     <section id="dashboardView" style="display:none">
-      <!-- Title & Greeting -->
-      <div class="admin-header">
-        <div class="admin-title-wrap">
-          <h1>Kelola Data Lamaran</h1>
-          <p>Pantau data formulir, verifikasi berkas KTP & CV, atur lowongan, dan ekspor data ke Excel.</p>
-        </div>
+      <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--secondary); letter-spacing: -0.02em;">Data Pelamar Kerja</h1>
+        <p style="color: var(--text-secondary); font-size: 0.95rem;">Kelola berkas lamaran, lowongan aktif, dan ekspor data ke Excel.</p>
       </div>
 
       <!-- KPI Summary Cards -->
-      <div class="kpi-grid">
-        <div class="kpi-card kpi-total">
-          <div class="kpi-info">
-            <h4>Total Pelamar</h4>
-            <div class="kpi-value" id="kpiTotal">0</div>
-          </div>
-          <div class="kpi-icon-wrap">📋</div>
+      <div class="admin-kpis">
+        <div class="kpi-item">
+          <div class="kpi-label">Total Pelamar</div>
+          <div class="kpi-number" id="kpiTotal">0</div>
         </div>
 
-        <div class="kpi-card kpi-pria">
-          <div class="kpi-info">
-            <h4>Pelamar Pria (Crew)</h4>
-            <div class="kpi-value" id="kpiPria">0</div>
-          </div>
-          <div class="kpi-icon-wrap">👨‍🍳</div>
+        <div class="kpi-item">
+          <div class="kpi-label">Pelamar Crew (Pria)</div>
+          <div class="kpi-number" id="kpiPria" style="color: var(--primary);">0</div>
         </div>
 
-        <div class="kpi-card kpi-wanita">
-          <div class="kpi-info">
-            <h4>Pelamar Wanita (Kasir)</h4>
-            <div class="kpi-value" id="kpiWanita">0</div>
-          </div>
-          <div class="kpi-icon-wrap">👩‍🍳</div>
+        <div class="kpi-item">
+          <div class="kpi-label">Pelamar Kasir (Wanita)</div>
+          <div class="kpi-number" id="kpiWanita" style="color: var(--danger);">0</div>
         </div>
 
-        <div class="kpi-card kpi-today">
-          <div class="kpi-info">
-            <h4>Masuk Hari Ini</h4>
-            <div class="kpi-value" id="kpiToday">0</div>
-          </div>
-          <div class="kpi-icon-wrap">⚡</div>
+        <div class="kpi-item">
+          <div class="kpi-label">Masuk Hari Ini</div>
+          <div class="kpi-number" id="kpiToday" style="color: var(--success);">0</div>
         </div>
       </div>
 
       <!-- Toolbar: Buka/Tutup Lamaran & Ekspor -->
-      <div class="admin-toolbar-card">
-        <div class="switches-group">
-          <label class="toggle-card">
-            <span class="switch">
-              <input type="checkbox" id="togglePria" />
-              <span class="slider"></span>
-            </span>
-            <span>Lowongan Pria (Crew)</span>
+      <div class="admin-card" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+          <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer;">
+            <input type="checkbox" id="togglePria" style="accent-color: var(--primary); width: 18px; height: 18px;" />
+            Lowongan Crew (Pria)
           </label>
 
-          <label class="toggle-card">
-            <span class="switch">
-              <input type="checkbox" id="toggleWanita" />
-              <span class="slider"></span>
-            </span>
-            <span>Lowongan Wanita (Kasir)</span>
+          <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer;">
+            <input type="checkbox" id="toggleWanita" style="accent-color: var(--primary); width: 18px; height: 18px;" />
+            Lowongan Kasir (Wanita)
           </label>
         </div>
 
         <div>
-          <a href="/api/admin/export" class="btn btn-dark" style="width: auto; padding: 0.65rem 1.4rem;">
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-            </svg>
-            Download Data (.xlsx)
+          <a href="/api/admin/export" class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 0.88rem;">
+            📊 Download Excel (.xlsx)
           </a>
         </div>
       </div>
 
       <!-- Search & Filters -->
-      <div class="search-filter-bar">
-        <div class="search-input-wrap">
-          <span class="search-icon">🔍</span>
-          <input type="text" id="searchInput" class="input-control" placeholder="Cari nama pelamar, nomor WA, domisili, posisi..." />
+      <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+        <div style="flex: 1; min-width: 260px;">
+          <input type="text" id="searchInput" class="input-control" placeholder="Cari nama, nomor WA, domisili, atau posisi..." />
         </div>
 
-        <div class="filter-pills">
-          <button class="filter-btn active" data-filter="all">Semua (<span id="countAll">0</span>)</button>
-          <button class="filter-btn" data-filter="pria">Pria / Crew (<span id="countPria">0</span>)</button>
-          <button class="filter-btn" data-filter="wanita">Wanita / Kasir (<span id="countWanita">0</span>)</button>
+        <div style="display: flex; gap: 8px;">
+          <button class="filter-btn active btn btn-outline" data-filter="all" style="width: auto; padding: 8px 14px; font-size: 0.85rem;">
+            Semua (<span id="countAll">0</span>)
+          </button>
+          <button class="filter-btn btn btn-outline" data-filter="pria" style="width: auto; padding: 8px 14px; font-size: 0.85rem;">
+            Crew (<span id="countPria">0</span>)
+          </button>
+          <button class="filter-btn btn btn-outline" data-filter="wanita" style="width: auto; padding: 8px 14px; font-size: 0.85rem;">
+            Kasir (<span id="countWanita">0</span>)
+          </button>
         </div>
       </div>
 
       <!-- Submissions Table Card -->
-      <div class="table-container">
-        <div class="table-responsive">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Waktu Masuk</th>
-                <th>Kategori</th>
-                <th>Nama & Usia</th>
-                <th>Kontak & WhatsApp</th>
-                <th>Domisili Sekarang</th>
-                <th>Posisi & Referensi</th>
-                <th>Berkas Terlampir</th>
-                <th style="text-align: right;">Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="tableBody">
-              <!-- Rendered via JavaScript -->
-            </tbody>
-          </table>
-        </div>
+      <div class="admin-card" style="padding: 0; overflow-x: auto;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Waktu Masuk</th>
+              <th>Posisi</th>
+              <th>Nama & Usia</th>
+              <th>Kontak (WA / Email)</th>
+              <th>Domisili Sekarang</th>
+              <th>Referensi</th>
+              <th>Berkas Terlampir</th>
+              <th style="text-align: right;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Rendered via JavaScript -->
+          </tbody>
+        </table>
 
-        <div id="emptyState" class="empty-state" style="display:none">
-          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📭</div>
-          <h3>Belum Ada Data Pelamar</h3>
-          <p>Belum ada pelamar yang sesuai dengan pencarian atau filter yang dipilih.</p>
+        <div id="emptyState" style="text-align: center; padding: 3rem; color: var(--text-secondary); display: none;">
+          <div style="font-size: 2rem; margin-bottom: 6px;">📭</div>
+          <h3 style="color: var(--secondary); font-size: 1.1rem;">Belum Ada Data Pelamar</h3>
+          <p style="font-size: 0.88rem;">Belum ada data pelamar yang sesuai dengan filter pencarian.</p>
         </div>
       </div>
     </section>
@@ -205,54 +179,51 @@
 
   <!-- CANDIDATE DETAIL MODAL -->
   <div id="detailModal" class="modal-overlay">
-    <div class="modal-box">
+    <div class="modal-card">
       <div class="modal-header">
         <div>
-          <h3 id="modalName">Detail Calon Karyawan</h3>
-          <div id="modalSubMeta" style="font-size: 0.85rem; color: var(--slate-500); margin-top: 2px;"></div>
+          <h3 id="modalName" style="font-size: 1.3rem; font-weight: 800; color: var(--secondary);">Detail Calon Karyawan</h3>
+          <div id="modalSubMeta" style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;"></div>
         </div>
-        <button id="closeDetailBtn" class="modal-close-btn">&times;</button>
+        <button id="closeDetailBtn" class="modal-close">&times;</button>
       </div>
 
-      <div class="modal-info-grid">
-        <div class="modal-info-item">
-          <div class="modal-info-label">Usia</div>
-          <div class="modal-info-val" id="modalUsia">-</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.25rem;">
+        <div style="background: var(--bg-subtle); padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border);">
+          <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Usia</div>
+          <div id="modalUsia" style="font-weight: 700; color: var(--secondary);">-</div>
         </div>
-        <div class="modal-info-item">
-          <div class="modal-info-label">Posisi Pekerjaan</div>
-          <div class="modal-info-val" id="modalPosisi">-</div>
+        <div style="background: var(--bg-subtle); padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border);">
+          <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Posisi Pekerjaan</div>
+          <div id="modalPosisi" style="font-weight: 700; color: var(--primary);">-</div>
         </div>
-        <div class="modal-info-item">
-          <div class="modal-info-label">Referensi Kerja</div>
-          <div class="modal-info-val" id="modalReferensi">-</div>
+        <div style="background: var(--bg-subtle); padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border);">
+          <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Referensi Kerja</div>
+          <div id="modalReferensi" style="font-weight: 700; color: var(--secondary);">-</div>
         </div>
-        <div class="modal-info-item">
-          <div class="modal-info-label">Email</div>
-          <div class="modal-info-val" id="modalEmail" style="word-break: break-all;">-</div>
+        <div style="background: var(--bg-subtle); padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border);">
+          <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Email</div>
+          <div id="modalEmail" style="font-weight: 600; color: var(--secondary); font-size: 0.88rem; word-break: break-all;">-</div>
         </div>
-      </div>
-
-      <div class="field">
-        <label style="font-size: 0.85rem; color: var(--slate-600); font-weight: 700;">Domisili ( Tempat Tinggal Sekarang )</label>
-        <div id="modalDomisili" style="background: var(--slate-50); border: 1px solid var(--slate-200); padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.9rem; color: var(--slate-800);"></div>
       </div>
 
       <div class="field">
-        <label style="font-size: 0.85rem; color: var(--slate-600); font-weight: 700;">Pengalaman Kerja</label>
-        <div id="modalPengalaman" style="background: var(--slate-50); border: 1px solid var(--slate-200); padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.9rem; color: var(--slate-800); white-space: pre-wrap;"></div>
+        <label style="font-size: 0.85rem; font-weight: 700;">Domisili ( Tempat Tinggal Sekarang )</label>
+        <div id="modalDomisili" style="background: var(--bg-subtle); border: 1px solid var(--border); padding: 10px 12px; border-radius: 8px; font-size: 0.9rem; color: var(--text-primary);"></div>
       </div>
 
-      <!-- Dokumen / Berkas Pelamar -->
       <div class="field">
-        <label style="font-size: 0.85rem; color: var(--slate-600); font-weight: 700;">Berkas & Dokumen Persyaratan</label>
-        <div id="modalFilesWrap" style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
-          <!-- Dynamically generated file buttons -->
-        </div>
+        <label style="font-size: 0.85rem; font-weight: 700;">Pengalaman Kerja</label>
+        <div id="modalPengalaman" style="background: var(--bg-subtle); border: 1px solid var(--border); padding: 10px 12px; border-radius: 8px; font-size: 0.9rem; color: var(--text-primary); white-space: pre-wrap;"></div>
       </div>
 
-      <div style="display: flex; gap: 10px; margin-top: 1.75rem;">
-        <a id="modalWaBtn" href="#" target="_blank" class="btn btn-success" style="flex: 1;">
+      <div class="field">
+        <label style="font-size: 0.85rem; font-weight: 700;">Berkas & Dokumen Persyaratan</label>
+        <div id="modalFilesWrap" style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;"></div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 1.5rem;">
+        <a id="modalWaBtn" href="#" target="_blank" class="btn" style="flex: 1; background: var(--success);">
           💬 Chat WhatsApp Pelamar
         </a>
         <button id="modalCloseActionBtn" class="btn btn-outline" style="width: auto;">
@@ -264,16 +235,16 @@
 
   <!-- DELETE CONFIRMATION MODAL -->
   <div id="deleteModal" class="modal-overlay">
-    <div class="modal-box" style="max-width: 440px; text-align: center;">
+    <div class="modal-card" style="max-width: 420px; text-align: center;">
       <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚠️</div>
-      <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--slate-900); margin-bottom: 0.5rem;">Hapus Data Lamaran?</h3>
-      <p style="color: var(--slate-600); font-size: 0.9rem; margin-bottom: 1.5rem;">
-        Data pelamar atas nama <strong id="deleteCandidateName">-</strong> beserta berkas yang diunggah akan dihapus permanen dari server.
+      <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Hapus Data Lamaran?</h3>
+      <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 1.5rem;">
+        Data pelamar atas nama <strong id="deleteCandidateName">-</strong> beserta berkas yang diunggah akan dihapus permanen.
       </p>
 
       <div style="display: flex; gap: 10px;">
-        <button id="confirmDeleteBtn" class="btn btn-red" style="flex: 1;">
-          Ya, Hapus Permanen
+        <button id="confirmDeleteBtn" class="btn" style="flex: 1; background: var(--danger);">
+          Ya, Hapus
         </button>
         <button id="cancelDeleteBtn" class="btn btn-outline" style="flex: 1;">
           Batal
@@ -282,7 +253,6 @@
     </div>
   </div>
 
-  <!-- Scripts -->
   <script src="/js/admin.js"></script>
   <script src="js/admin.js"></script>
 </body>
