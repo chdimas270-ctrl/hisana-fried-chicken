@@ -11,6 +11,11 @@ data/*.json
 !data/.gitkeep
 data/*.tmp
 
+# Uploaded candidate documents (KTP, CV, Surat Lamaran)
+uploads/*
+!uploads/.gitkeep
+
+
 # Logs
 logs/
 *.log

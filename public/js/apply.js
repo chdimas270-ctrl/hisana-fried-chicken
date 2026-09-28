@@ -1,7 +1,7 @@
 (() => {
   const params = new URLSearchParams(window.location.search);
   const gender = params.get('g') === 'wanita' ? 'wanita' : 'pria';
-  
+
   const genderInput = document.getElementById('jenisKelamin');
   const categoryBadge = document.getElementById('categoryBadge');
   const pageTitle = document.getElementById('pageTitle');
@@ -9,6 +9,9 @@
   const form = document.getElementById('applyForm');
   const alertBox = document.getElementById('alertBox');
   const successModal = document.getElementById('successModal');
+  const posisiDisplay = document.getElementById('posisiPekerjaanDisplay');
+  const posisiInput = document.getElementById('posisiPekerjaan');
+  const posisiHint = document.getElementById('posisiHint');
 
   // Set nilai dan gaya berdasarkan gender
   if (genderInput) genderInput.value = gender;
@@ -19,14 +22,28 @@
   }
 
   if (pageTitle) {
-    pageTitle.textContent = `Formulir Lamaran — ${gender === 'pria' ? 'Pria' : 'Wanita'}`;
+    pageTitle.textContent = `Formulir Lamaran — ${gender === 'pria' ? 'Pria (Crew)' : 'Wanita (Kasir)'}`;
+  }
+
+  // ATURAN POSISI PEKERJAAN:
+  // Perempuan: HANYA Kasir
+  // Laki-laki: HANYA Crew
+  const assignedPosition = gender === 'wanita' ? 'Kasir' : 'Crew';
+  if (posisiDisplay) {
+    posisiDisplay.value = `${assignedPosition} (${gender === 'wanita' ? 'Khusus Wanita' : 'Khusus Pria'})`;
+  }
+  if (posisiInput) {
+    posisiInput.value = assignedPosition;
+  }
+  if (posisiHint) {
+    posisiHint.textContent = `Posisi kerja otomatis ditetapkan: ${assignedPosition}.`;
   }
 
   if (submitBtn) {
     submitBtn.className = `btn ${gender === 'pria' ? 'btn-orange' : 'btn-red'}`;
   }
 
-  // Cek status lowongan dari server
+  // Cek ketersediaan lowongan dari server
   async function checkCategoryStatus() {
     try {
       const res = await fetch('/api/status');
@@ -34,7 +51,7 @@
       if (data && data.ok && data.status && data.status[gender] === false) {
         if (form) form.style.display = 'none';
         showAlert('alert-warning', `
-          <strong>Pemberitahuan:</strong> Lowongan kerja untuk kategori <strong>${gender === 'pria' ? 'Pria' : 'Wanita'}</strong> saat ini sedang ditutup atau kuota telah terpenuhi. Silakan cek kembali secara berkala.
+          <strong>Pemberitahuan:</strong> Lowongan kerja untuk kategori <strong>${gender === 'pria' ? 'Pria (Crew)' : 'Wanita (Kasir)'}</strong> saat ini sedang ditutup. Silakan cek kembali secara berkala.
         `);
       }
     } catch (err) {
@@ -51,7 +68,7 @@
   }
 
   function clearFieldErrors() {
-    document.querySelectorAll('.field.has-error').forEach((el) => {
+    document.querySelectorAll('.field.has-error, .file-upload-card.has-error').forEach((el) => {
       el.classList.remove('has-error');
     });
   }
@@ -59,46 +76,136 @@
   function markFieldError(name, customMsg) {
     const input = form.querySelector(`[name="${name}"]`);
     if (!input) return;
-    const field = input.closest('.field');
-    if (field) {
-      field.classList.add('has-error');
+    const container = input.closest('.field') || input.closest('.file-upload-card');
+    if (container) {
+      container.classList.add('has-error');
       if (customMsg) {
-        const errorMsg = field.querySelector('.error-message');
+        const errorMsg = container.querySelector('.error-message');
         if (errorMsg) errorMsg.textContent = customMsg;
       }
     }
   }
 
-  // Hapus tanda error seketika pengguna mulai mengetik
+  // Hapus error saat input diubah
   form.querySelectorAll('input, select, textarea').forEach((input) => {
     input.addEventListener('input', () => {
-      const field = input.closest('.field');
-      if (field) field.classList.remove('has-error');
+      const container = input.closest('.field') || input.closest('.file-upload-card');
+      if (container) container.classList.remove('has-error');
     });
   });
 
-  // Format otomatis nomor WhatsApp
-  const noHpInput = document.getElementById('noHp');
-  if (noHpInput) {
-    noHpInput.addEventListener('blur', () => {
-      let val = noHpInput.value.trim().replace(/[^0-9+]/g, '');
+  // Format nomor WhatsApp otomatis
+  const noWaInput = document.getElementById('noWa');
+  if (noWaInput) {
+    noWaInput.addEventListener('blur', () => {
+      let val = noWaInput.value.trim().replace(/[^0-9+]/g, '');
       if (val.startsWith('+62')) {
         val = '0' + val.slice(3);
       } else if (val.startsWith('62')) {
         val = '0' + val.slice(2);
       }
-      noHpInput.value = val;
+      noWaInput.value = val;
     });
   }
 
-  // Handle Pengiriman Formulir
+  // ---------------------------------------------------------------------------
+  // MANAJEMEN UNGGAH BERKAS (SECURITY & CLIENT VALIDATION)
+  // ---------------------------------------------------------------------------
+  const ALLOWED_EXTS = ['.pdf', '.jpg', '.jpeg', '.png'];
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+
+  function formatBytes(bytes) {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+  }
+
+  function setupFileInput(inputId, infoBoxId) {
+    const fileInput = document.getElementById(inputId);
+    const infoBox = document.getElementById(infoBoxId);
+    if (!fileInput || !infoBox) return;
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files && fileInput.files[0]) {
+        const file = fileInput.files[0];
+        const ext = '.' + file.name.split('.').pop().toLowerCase();
+
+        // Validasi Ekstensi
+        if (!ALLOWED_EXTS.includes(ext)) {
+          alert(`Format file "${file.name}" tidak diizinkan! Hanya diperbolehkan file PDF, JPG, dan PNG.`);
+          fileInput.value = '';
+          infoBox.classList.remove('active');
+          return;
+        }
+
+        // Validasi Ukuran File
+        if (file.size > MAX_FILE_SIZE) {
+          alert(`Ukuran file "${file.name}" terlalu besar (${formatBytes(file.size)}). Maksimal ukuran file adalah 5 MB.`);
+          fileInput.value = '';
+          infoBox.classList.remove('active');
+          return;
+        }
+
+        // Tampilkan info file
+        const textSpan = infoBox.querySelector('.file-name-text');
+        if (textSpan) {
+          textSpan.textContent = `✓ ${file.name} (${formatBytes(file.size)})`;
+        }
+        infoBox.classList.add('active');
+
+        // Hapus error jika ada
+        const card = fileInput.closest('.file-upload-card');
+        if (card) card.classList.remove('has-error');
+      } else {
+        infoBox.classList.remove('active');
+      }
+    });
+  }
+
+  setupFileInput('fotoKtp', 'infoKtp');
+  setupFileInput('cv', 'infoCv');
+  setupFileInput('suratLamaran', 'infoSurat');
+
+  // Global helper untuk clear file
+  window.clearFileInput = function (inputId) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    input.value = '';
+    const infoMap = {
+      fotoKtp: 'infoKtp',
+      cv: 'infoCv',
+      suratLamaran: 'infoSurat',
+    };
+    const infoBox = document.getElementById(infoMap[inputId]);
+    if (infoBox) infoBox.classList.remove('active');
+  };
+
+  // ---------------------------------------------------------------------------
+  // SUBMIT FORMULIR VIA MULTIPART/FORM-DATA
+  // ---------------------------------------------------------------------------
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     clearFieldErrors();
     if (alertBox) alertBox.innerHTML = '';
 
+    // Cek berkas wajib KTP dan CV
+    const ktpInput = document.getElementById('fotoKtp');
+    const cvInput = document.getElementById('cv');
+
+    let hasFileError = false;
+    if (!ktpInput.files || ktpInput.files.length === 0) {
+      document.getElementById('cardKtp').classList.add('has-error');
+      hasFileError = true;
+    }
+    if (!cvInput.files || cvInput.files.length === 0) {
+      document.getElementById('cardCv').classList.add('has-error');
+      hasFileError = true;
+    }
+
     // Validasi HTML5 bawaan
-    if (!form.checkValidity()) {
+    if (!form.checkValidity() || hasFileError) {
       let hasFirstError = false;
       form.querySelectorAll(':invalid').forEach((el) => {
         if (el.name) {
@@ -109,52 +216,55 @@
           }
         }
       });
-      showAlert('alert-danger', 'Mohon periksa kembali kolom yang bertanda merah dan lengkapi data wajib.');
+
+      showAlert(
+        'alert-danger',
+        'Mohon lengkapi seluruh kolom wajib bertanda bintang (*) dan pastikan Foto KTP serta CV telah Anda pilih.'
+      );
       return;
     }
 
-    const payload = Object.fromEntries(new FormData(form).entries());
+    // Bangun FormData dengan berkas biner
+    const formData = new FormData(form);
 
-    // Validasi tambahan format nomor HP
-    const phoneClean = payload.noHp.replace(/[\s-]/g, '');
-    if (!/^(08|628|\+628)[0-9]{8,13}$/.test(phoneClean)) {
-      markFieldError('noHp', 'Nomor HP harus diawali 08 dan memiliki panjang 10-14 digit.');
-      showAlert('alert-danger', 'Nomor HP / WhatsApp yang Anda masukkan tidak valid.');
-      return;
-    }
-
-    // Set status loading
     submitBtn.disabled = true;
     const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span class="spinner"></span> Sedang Mengirim Data...';
+    submitBtn.innerHTML = '<span class="spinner"></span> Sedang Mengunggah & Mengirim...';
 
     try {
       const res = await fetch('/api/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        // PENTING: Jangan set Content-Type header manual agar browser membuat boundary multipart otomatis
+        body: formData,
       });
 
       const data = await res.json();
 
       if (data && data.ok) {
         form.reset();
-        // Tampilkan Modal Sukses
+        document.querySelectorAll('.file-selected-info').forEach((el) => el.classList.remove('active'));
+
         if (successModal) {
           successModal.classList.add('active');
         } else {
           form.style.display = 'none';
-          showAlert('alert-success', data.message || 'Lamaran berhasil dikirim! Terima kasih.');
+          showAlert('alert-success', data.message || 'Lamaran & berkas berhasil dikirim! Terima kasih.');
         }
       } else {
         if (data && data.errors && Array.isArray(data.errors)) {
           data.errors.forEach((err) => markFieldError(err.path, err.msg));
         }
-        showAlert('alert-danger', data.message || 'Gagal mengirim lamaran. Silakan periksa kembali data Anda.');
+        showAlert(
+          'alert-danger',
+          data.message || 'Gagal mengirim formulir. Silakan periksa kembali data Anda.'
+        );
       }
     } catch (err) {
       console.error('Submit error:', err);
-      showAlert('alert-danger', 'Terjadi gangguan jaringan saat mengirim data. Pastikan koneksi internet Anda stabil.');
+      showAlert(
+        'alert-danger',
+        'Terjadi kendala jaringan saat mengunggah berkas. Pastikan ukuran file tidak melebihi 5 MB dan koneksi Anda stabil.'
+      );
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalText;

@@ -65,11 +65,17 @@ function deleteSubmission(id) {
   return filtered.length !== all.length;
 }
 
+function getSubmission(id) {
+  const all = listSubmissions();
+  return all.find((s) => s.id === id) || null;
+}
+
 module.exports = {
   init,
   getSettings,
   setSettings,
   listSubmissions,
+  getSubmission,
   addSubmission,
   deleteSubmission,
 };

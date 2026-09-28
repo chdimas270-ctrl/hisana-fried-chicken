@@ -31,13 +31,13 @@
   const modalCloseActionBtn = document.getElementById('modalCloseActionBtn');
   const modalName = document.getElementById('modalName');
   const modalSubMeta = document.getElementById('modalSubMeta');
-  const modalTTL = document.getElementById('modalTTL');
-  const modalStatusPernikahan = document.getElementById('modalStatusPernikahan');
-  const modalPendidikan = document.getElementById('modalPendidikan');
-  const modalKetersediaan = document.getElementById('modalKetersediaan');
-  const modalAlamat = document.getElementById('modalAlamat');
+  const modalUsia = document.getElementById('modalUsia');
+  const modalPosisi = document.getElementById('modalPosisi');
+  const modalReferensi = document.getElementById('modalReferensi');
+  const modalEmail = document.getElementById('modalEmail');
+  const modalDomisili = document.getElementById('modalDomisili');
   const modalPengalaman = document.getElementById('modalPengalaman');
-  const modalAlasan = document.getElementById('modalAlasan');
+  const modalFilesWrap = document.getElementById('modalFilesWrap');
   const modalWaBtn = document.getElementById('modalWaBtn');
 
   // Delete modal elements
@@ -227,11 +227,12 @@
       if (!query) return true;
       const haystack = [
         item.namaLengkap,
+        item.noWa,
         item.noHp,
         item.email,
-        item.posisiDilamar,
-        item.pendidikanTerakhir,
-        item.alamat,
+        item.posisiPekerjaan,
+        item.domisili,
+        item.referensi,
       ].filter(Boolean).join(' ').toLowerCase();
 
       return haystack.includes(query);
@@ -263,13 +264,31 @@
           minute: '2-digit',
         });
 
-        // Format WA link
-        let phoneDigits = (item.noHp || '').replace(/[^0-9]/g, '');
+        const phoneVal = item.noWa || item.noHp || '-';
+        let phoneDigits = phoneVal.replace(/[^0-9]/g, '');
         if (phoneDigits.startsWith('0')) phoneDigits = '62' + phoneDigits.slice(1);
+
+        const posisiFixed = item.posisiPekerjaan || (item.jenisKelamin === 'pria' ? 'Crew' : 'Kasir');
+
         const waMsg = encodeURIComponent(
-          `Halo Sdr/i ${item.namaLengkap},\n\nTerima kasih telah melamar posisi ${item.posisiDilamar} di Hisana Fried Chicken Cirebon. Kami dari tim HRD bermaksud untuk mengundang Anda dalam tahap wawancara kerja...`
+          `Halo Sdr/i ${item.namaLengkap},\n\nTerima kasih telah melamar posisi ${posisiFixed} di Hisana Fried Chicken Cirebon. Berkas Anda telah kami tinjau dan kami bermaksud mengundang Anda untuk mengikuti tahapan wawancara kerja...`
         );
         const waLink = `https://wa.me/${phoneDigits}?text=${waMsg}`;
+
+        // Render file pill badges
+        let filesHtml = '';
+        if (item.files) {
+          if (item.files.fotoKtp) {
+            filesHtml += `<a href="/api/admin/files/${encodeURIComponent(item.files.fotoKtp.storedFilename)}" target="_blank" class="doc-pill-link" title="Lihat Foto KTP">🪪 KTP</a> `;
+          }
+          if (item.files.cv) {
+            filesHtml += `<a href="/api/admin/files/${encodeURIComponent(item.files.cv.storedFilename)}" target="_blank" class="doc-pill-link" title="Lihat CV">📑 CV</a> `;
+          }
+          if (item.files.suratLamaran) {
+            filesHtml += `<a href="/api/admin/files/${encodeURIComponent(item.files.suratLamaran.storedFilename)}" target="_blank" class="doc-pill-link" title="Lihat Surat Lamaran">📄 Surat</a>`;
+          }
+        }
+        if (!filesHtml) filesHtml = '<span style="color:var(--slate-400);font-size:0.8rem;">-</span>';
 
         return `
           <tr>
@@ -284,25 +303,32 @@
             </td>
             <td>
               <div style="font-weight:700; color:var(--slate-900);">${escapeHtml(item.namaLengkap)}</div>
-              <div style="font-size:0.75rem; color:var(--slate-500);">${escapeHtml(item.statusPernikahan || '-')}</div>
+              <div style="font-size:0.78rem; color:var(--slate-500);">${item.usia ? item.usia + ' Tahun' : '-'}</div>
             </td>
             <td>
-              <div style="font-weight:600; color:var(--slate-800);">${escapeHtml(item.noHp)}</div>
+              <div style="font-weight:600; color:var(--slate-800);">${escapeHtml(phoneVal)}</div>
               <div style="font-size:0.75rem; color:var(--slate-500);">${escapeHtml(item.email)}</div>
             </td>
             <td>
-              <span class="badge-pos">${escapeHtml(item.posisiDilamar)}</span>
-              <div style="font-size:0.75rem; color:var(--slate-500); margin-top:2px;">Pendidikan: ${escapeHtml(item.pendidikanTerakhir)}</div>
+              <div style="font-size:0.85rem; color:var(--slate-700); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(item.domisili || '')}">
+                ${escapeHtml(item.domisili || '-')}
+              </div>
             </td>
             <td>
-              <div style="font-size:0.82rem; color:var(--slate-700);">${escapeHtml(item.ketersediaan || 'Full Time')}</div>
+              <span class="badge-pos">${escapeHtml(posisiFixed)}</span>
+              <div style="font-size:0.75rem; color:var(--slate-500); margin-top:2px;">Ref: ${escapeHtml(item.referensi || '-')}</div>
+            </td>
+            <td>
+              <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                ${filesHtml}
+              </div>
             </td>
             <td style="text-align: right;">
               <div class="action-buttons" style="justify-content: flex-end;">
                 <a href="${waLink}" target="_blank" class="btn-icon wa" title="Hubungi via WhatsApp">
                   💬
                 </a>
-                <button class="btn-icon detail-btn" data-id="${item.id}" title="Lihat Profil Lengkap">
+                <button class="btn-icon detail-btn" data-id="${item.id}" title="Lihat Profil & Berkas Lengkap">
                   👁️
                 </button>
                 <button class="btn-icon delete delete-btn" data-id="${item.id}" data-name="${escapeHtml(item.namaLengkap)}" title="Hapus Data">
@@ -335,21 +361,67 @@
 
   // Open Detail Modal
   function openDetailModal(c) {
+    const posisiFixed = c.posisiPekerjaan || (c.jenisKelamin === 'pria' ? 'Crew' : 'Kasir');
     modalName.textContent = c.namaLengkap;
-    modalSubMeta.textContent = `Melamar sebagai: ${c.posisiDilamar} · Kategori ${c.jenisKelamin === 'pria' ? 'Pria' : 'Wanita'}`;
-    modalTTL.textContent = c.tempatTanggalLahir || '-';
-    modalStatusPernikahan.textContent = c.statusPernikahan || '-';
-    modalPendidikan.textContent = c.pendidikanTerakhir || '-';
-    modalKetersediaan.textContent = c.ketersediaan || '-';
-    modalAlamat.textContent = c.alamat || '-';
+    modalSubMeta.textContent = `Posisi: ${posisiFixed} · Kategori ${c.jenisKelamin === 'pria' ? 'Pria' : 'Wanita'}`;
+    modalUsia.textContent = c.usia ? `${c.usia} Tahun` : '-';
+    modalPosisi.textContent = posisiFixed;
+    modalReferensi.textContent = c.referensi || '-';
+    modalEmail.textContent = c.email || '-';
+    modalDomisili.textContent = c.domisili || '-';
     modalPengalaman.textContent = c.pengalamanKerja || 'Belum memiliki pengalaman kerja (Fresh Graduate).';
-    modalAlasan.textContent = c.alasanMelamar || '-';
+
+    // Render Dokumen Terlampir di Modal
+    modalFilesWrap.innerHTML = '';
+    if (c.files) {
+      if (c.files.fotoKtp) {
+        modalFilesWrap.innerHTML += `
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; padding:10px 14px; border-radius:8px;">
+            <div style="display:flex; align-items:center; gap:8px; font-size:0.9rem; font-weight:600; color:#0f172a;">
+              <span>🪪</span> Foto KTP Asli
+            </div>
+            <a href="/api/admin/files/${encodeURIComponent(c.files.fotoKtp.storedFilename)}" target="_blank" class="btn btn-dark" style="width:auto; padding:6px 14px; font-size:0.8rem;">
+              Buka / Unduh KTP &rarr;
+            </a>
+          </div>
+        `;
+      }
+      if (c.files.cv) {
+        modalFilesWrap.innerHTML += `
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; padding:10px 14px; border-radius:8px;">
+            <div style="display:flex; align-items:center; gap:8px; font-size:0.9rem; font-weight:600; color:#0f172a;">
+              <span>📑</span> CV (Curriculum Vitae)
+            </div>
+            <a href="/api/admin/files/${encodeURIComponent(c.files.cv.storedFilename)}" target="_blank" class="btn btn-dark" style="width:auto; padding:6px 14px; font-size:0.8rem;">
+              Buka / Unduh CV &rarr;
+            </a>
+          </div>
+        `;
+      }
+      if (c.files.suratLamaran) {
+        modalFilesWrap.innerHTML += `
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; padding:10px 14px; border-radius:8px;">
+            <div style="display:flex; align-items:center; gap:8px; font-size:0.9rem; font-weight:600; color:#0f172a;">
+              <span>📄</span> Surat Lamaran Kerja
+            </div>
+            <a href="/api/admin/files/${encodeURIComponent(c.files.suratLamaran.storedFilename)}" target="_blank" class="btn btn-dark" style="width:auto; padding:6px 14px; font-size:0.8rem;">
+              Buka / Unduh Surat &rarr;
+            </a>
+          </div>
+        `;
+      }
+    }
+
+    if (!modalFilesWrap.innerHTML) {
+      modalFilesWrap.innerHTML = '<div style="color:var(--slate-400); font-size:0.88rem; font-style:italic;">Tidak ada berkas yang diunggah.</div>';
+    }
 
     // WA Button in Modal
-    let phoneDigits = (c.noHp || '').replace(/[^0-9]/g, '');
+    const phoneVal = c.noWa || c.noHp || '';
+    let phoneDigits = phoneVal.replace(/[^0-9]/g, '');
     if (phoneDigits.startsWith('0')) phoneDigits = '62' + phoneDigits.slice(1);
     const waMsg = encodeURIComponent(
-      `Halo Sdr/i ${c.namaLengkap},\n\nTerima kasih telah melamar posisi ${c.posisiDilamar} di Hisana Fried Chicken Cirebon. Kami dari tim HRD bermaksud untuk mengundang Anda dalam tahap wawancara kerja...`
+      `Halo Sdr/i ${c.namaLengkap},\n\nTerima kasih telah melamar posisi ${posisiFixed} di Hisana Fried Chicken Cirebon. Berkas Anda telah kami tinjau dan kami bermaksud mengundang Anda untuk mengikuti tahapan wawancara kerja...`
     );
     modalWaBtn.href = `https://wa.me/${phoneDigits}?text=${waMsg}`;
 

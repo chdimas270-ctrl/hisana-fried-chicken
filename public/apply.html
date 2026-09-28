@@ -53,136 +53,181 @@
             👨‍🍳 Lamaran Kategori Pria
           </div>
           <h1 id="pageTitle">Formulir Pendaftaran Kerja</h1>
-          <p id="pageSubtitle">Pastikan seluruh data yang Anda masukkan adalah benar, valid, dan dapat dipertanggungjawabkan.</p>
+          <p id="pageSubtitle">Lengkapi data diri dan unggah berkas Anda secara benar dan lengkap.</p>
         </div>
 
         <!-- Alert Notification Box -->
         <div id="alertBox"></div>
 
-        <form id="applyForm" novalidate>
+        <form id="applyForm" novalidate enctype="multipart/form-data">
           <input type="hidden" id="jenisKelamin" name="jenisKelamin" value="pria" />
 
-          <!-- SEKSI 1: DATA PRIBADI -->
+          <!-- SEKSI 1: DATA IDENTITAS DIRI -->
           <div class="form-section-title">
-            <span class="badge-num">1</span> Data Pribadi
+            <span class="badge-num">1</span> Data Pribadi & Kontak
           </div>
 
           <div class="field">
             <label for="namaLengkap">Nama Lengkap <span class="req">*</span></label>
-            <input type="text" id="namaLengkap" name="namaLengkap" class="input-control" placeholder="Sesuai KTP (Contoh: Ahmad Rizki)" required minlength="3" maxlength="100" />
-            <div class="error-message">Nama lengkap minimal 3 karakter.</div>
+            <input type="text" id="namaLengkap" name="namaLengkap" class="input-control" placeholder="Contoh: Budi Santoso (sesuai KTP)" required minlength="3" maxlength="100" />
+            <div class="error-message">Nama lengkap wajib diisi minimal 3 karakter.</div>
           </div>
 
           <div class="field-grid-2">
             <div class="field">
-              <label for="tempatTanggalLahir">Tempat, Tanggal Lahir <span class="req">*</span></label>
-              <input type="text" id="tempatTanggalLahir" name="tempatTanggalLahir" class="input-control" placeholder="Contoh: Cirebon, 14 Agustus 2001" required maxlength="100" />
-              <div class="error-message">Wajib diisi dengan benar.</div>
+              <label for="usia">Usia (Tahun) <span class="req">*</span></label>
+              <input type="number" id="usia" name="usia" class="input-control" placeholder="Contoh: 21" required min="17" max="55" />
+              <div class="error-message">Usia harus berupa angka antara 17 - 55 tahun.</div>
             </div>
 
             <div class="field">
-              <label for="statusPernikahan">Status Pernikahan <span class="req">*</span></label>
-              <select id="statusPernikahan" name="statusPernikahan" class="input-control" required>
-                <option value="">-- Pilih Status --</option>
-                <option value="Belum Menikah">Belum Menikah (Lajang)</option>
-                <option value="Menikah">Menikah</option>
-              </select>
-              <div class="error-message">Silakan pilih status pernikahan.</div>
+              <label for="noWa">Nomor WhatsApp Aktif <span class="req">*</span></label>
+              <input type="tel" id="noWa" name="noWa" class="input-control" placeholder="08xxxxxxxxxx" required maxlength="20" />
+              <div class="field-hint">Pastikan nomor aktif untuk panggilan interview.</div>
+              <div class="error-message">Nomor WhatsApp tidak valid (contoh: 08123456789).</div>
             </div>
-          </div>
-
-          <!-- SEKSI 2: KONTAK & TEMPAT TINGGAL -->
-          <div class="form-section-title">
-            <span class="badge-num">2</span> Kontak & Alamat Domisili
           </div>
 
           <div class="field-grid-2">
-            <div class="field">
-              <label for="noHp">Nomor WhatsApp Aktif <span class="req">*</span></label>
-              <input type="tel" id="noHp" name="noHp" class="input-control" placeholder="08xxxxxxxxxx" required maxlength="20" />
-              <div class="field-hint">Pastikan nomor terhubung dengan WhatsApp untuk panggilan tes.</div>
-              <div class="error-message">Nomor HP/WhatsApp tidak valid (contoh: 08123456789).</div>
-            </div>
-
             <div class="field">
               <label for="email">Alamat Email Aktif <span class="req">*</span></label>
               <input type="email" id="email" name="email" class="input-control" placeholder="nama@gmail.com" required maxlength="100" />
               <div class="error-message">Format email tidak valid.</div>
             </div>
-          </div>
-
-          <div class="field">
-            <label for="alamat">Alamat Lengkap Saat Ini <span class="req">*</span></label>
-            <textarea id="alamat" name="alamat" class="input-control" placeholder="Tuliskan nama jalan, RT/RW, kelurahan/desa, kecamatan di Cirebon dan sekitarnya..." required minlength="5" maxlength="300"></textarea>
-            <div class="error-message">Alamat domisili wajib diisi minimal 5 karakter.</div>
-          </div>
-
-          <!-- SEKSI 3: KUALIFIKASI & POSISI -->
-          <div class="form-section-title">
-            <span class="badge-num">3</span> Posisi & Kualifikasi
-          </div>
-
-          <div class="field-grid-2">
-            <div class="field">
-              <label for="pendidikanTerakhir">Pendidikan Terakhir <span class="req">*</span></label>
-              <select id="pendidikanTerakhir" name="pendidikanTerakhir" class="input-control" required>
-                <option value="">-- Pilih Pendidikan --</option>
-                <option value="SMP">SMP / Sederajat</option>
-                <option value="SMA/SMK">SMA / SMK / MA</option>
-                <option value="D3">Diploma (D3)</option>
-                <option value="S1">Sarjana (S1)</option>
-                <option value="Lainnya">Lainnya</option>
-              </select>
-              <div class="error-message">Pendidikan terakhir wajib dipilih.</div>
-            </div>
 
             <div class="field">
-              <label for="posisiDilamar">Posisi yang Diinginkan <span class="req">*</span></label>
-              <select id="posisiDilamar" name="posisiDilamar" class="input-control" required>
-                <option value="">-- Pilih Posisi --</option>
-                <option value="Kru Dapur / Cook">Kru Dapur / Juru Masak (Cook)</option>
-                <option value="Kasir">Kasir</option>
-                <option value="Pramusaji / Server">Pramusaji / Server</option>
-                <option value="Kurir / Delivery">Kurir / Delivery</option>
-                <option value="Cleaning & Maintenance">Cleaning Service & Kebersihan</option>
-                <option value="Kru All-Round">Kru All-Round (Fleksibel)</option>
-              </select>
-              <div class="error-message">Posisi yang dilamar wajib dipilih.</div>
+              <label for="posisiPekerjaanDisplay">Posisi Pekerjaan <span class="req">*</span></label>
+              <!-- Ditentukan otomatis berdasarkan kategori: Laki-laki = Crew, Perempuan = Kasir -->
+              <input type="text" id="posisiPekerjaanDisplay" class="input-control" value="Crew" readonly style="background: var(--slate-100); font-weight: 700; cursor: not-allowed;" />
+              <input type="hidden" id="posisiPekerjaan" name="posisiPekerjaan" value="Crew" />
+              <div class="field-hint" id="posisiHint">Posisi otomatis sesuai kualifikasi form: Crew.</div>
             </div>
           </div>
 
           <div class="field">
-            <label for="ketersediaan">Ketersediaan Jam Kerja <span class="req">*</span></label>
-            <select id="ketersediaan" name="ketersediaan" class="input-control" required>
-              <option value="">-- Pilih Ketersediaan --</option>
-              <option value="Full Time (Siap Shift)">Full Time (Siap Shift Pagi/Siang/Malam)</option>
-              <option value="Shift Pagi">Khusus Shift Pagi</option>
-              <option value="Shift Siang / Malam">Khusus Shift Siang / Malam</option>
-              <option value="Part Time / Paruh Waktu">Part Time / Paruh Waktu</option>
-              <option value="Fleksibel Setiap Hari">Fleksibel Setiap Hari</option>
-            </select>
-            <div class="error-message">Ketersediaan jam kerja wajib dipilih.</div>
+            <label for="domisili">Domisili ( Tempat Tinggal Sekarang ) <span class="req">*</span></label>
+            <textarea id="domisili" name="domisili" class="input-control" placeholder="Tuliskan alamat tempat tinggal Anda saat ini di Cirebon dan sekitarnya (Nama jalan, RT/RW, Kelurahan/Desa, Kecamatan)..." required minlength="5" maxlength="300"></textarea>
+            <div class="error-message">Domisili tempat tinggal sekarang wajib diisi minimal 5 karakter.</div>
           </div>
 
-          <!-- SEKSI 4: PENGALAMAN & MOTIVASI -->
+          <!-- SEKSI 2: PENGALAMAN & REFERENSI -->
           <div class="form-section-title">
-            <span class="badge-num">4</span> Pengalaman & Motivasi
+            <span class="badge-num">2</span> Pengalaman & Referensi
           </div>
 
           <div class="field">
-            <label for="pengalamanKerja">Pengalaman Kerja Sebelumnya <span class="optional">(opsional jika belum pernah bekerja)</span></label>
-            <textarea id="pengalamanKerja" name="pengalamanKerja" class="input-control" placeholder="Sebutkan nama tempat kerja sebelumnya, posisi, dan lama bekerja jika ada. (Kosongkan jika fresh graduate)"></textarea>
+            <label for="pengalamanKerja">Pengalaman Kerja <span class="optional">(opsional jika belum pernah bekerja)</span></label>
+            <textarea id="pengalamanKerja" name="pengalamanKerja" class="input-control" placeholder="Tuliskan pengalaman kerja Anda sebelumnya jika ada. (Contoh: Pernah bekerja sebagai staf dapur di resto ABC selama 1 tahun. Kosongkan jika fresh graduate)."></textarea>
           </div>
 
           <div class="field">
-            <label for="alasanMelamar">Alasan Ingin Bekerja di Hisana Fried Chicken <span class="req">*</span></label>
-            <textarea id="alasanMelamar" name="alasanMelamar" class="input-control" placeholder="Ceritakan motivasi dan keahlian yang dapat Anda berikan untuk kemajuan outlet Hisana..." required minlength="10" maxlength="1000"></textarea>
-            <div class="error-message">Berikan alasan melamar minimal 10 karakter.</div>
+            <label>Siapakah yang memberikan referensi kerja di Hisana kepada Anda? <span class="req">*</span></label>
+            <div class="radio-options-grid">
+              <label class="radio-card-label">
+                <input type="radio" name="referensi" value="Anggota Keluarga" required />
+                <span class="radio-title">👨‍👩‍👧 Anggota Keluarga</span>
+              </label>
+
+              <label class="radio-card-label">
+                <input type="radio" name="referensi" value="Teman" required />
+                <span class="radio-title">🤝 Teman / Rekan</span>
+              </label>
+
+              <label class="radio-card-label">
+                <input type="radio" name="referensi" value="Sosial Media" required />
+                <span class="radio-title">📱 Sosial Media</span>
+              </label>
+            </div>
+            <div class="error-message" id="refError">Silakan pilih salah satu opsi referensi.</div>
           </div>
 
-          <div style="margin-top: 2rem;">
+          <!-- SEKSI 3: UNGGAH DOKUMEN & BERKAS -->
+          <div class="form-section-title">
+            <span class="badge-num">3</span> Unggah Berkas Persyaratan
+          </div>
+
+          <p style="font-size: 0.88rem; color: var(--slate-600); margin-bottom: 1.25rem;">
+            Format yang didukung: <strong>PDF, JPG, JPEG, PNG</strong> (Maksimal 5 MB per berkas). Sistem kami dilengkapi proteksi keamanan data terenkripsi.
+          </p>
+
+          <!-- 1. KTP (Wajib) -->
+          <div class="file-upload-card" id="cardKtp">
+            <div class="file-upload-header">
+              <div class="file-upload-title">
+                <span>🪪</span> Foto KTP Asli
+              </div>
+              <span class="file-upload-badge required">Wajib Diunggah</span>
+            </div>
+            <div class="file-upload-desc">
+              Unggah foto KTP yang jelas dan terbaca (format gambar JPG/PNG atau PDF).
+            </div>
+
+            <input type="file" id="fotoKtp" name="fotoKtp" class="file-input-hidden" accept=".pdf,.jpg,.jpeg,.png" required />
+            <button type="button" class="file-upload-btn" onclick="document.getElementById('fotoKtp').click()">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              Pilih File Foto KTP
+            </button>
+
+            <div class="file-selected-info" id="infoKtp">
+              <span class="file-name-text"></span>
+              <button type="button" class="file-remove-btn" title="Hapus file" onclick="clearFileInput('fotoKtp')">&times;</button>
+            </div>
+            <div class="error-message">Foto KTP wajib diunggah.</div>
+          </div>
+
+          <!-- 2. CV (Wajib) -->
+          <div class="file-upload-card" id="cardCv">
+            <div class="file-upload-header">
+              <div class="file-upload-title">
+                <span>📑</span> CV (Curriculum Vitae / Riwayat Hidup)
+              </div>
+              <span class="file-upload-badge required">Wajib Diunggah</span>
+            </div>
+            <div class="file-upload-desc">
+              Unggah berkas riwayat hidup / biodata diri Anda (PDF / Foto).
+            </div>
+
+            <input type="file" id="cv" name="cv" class="file-input-hidden" accept=".pdf,.jpg,.jpeg,.png" required />
+            <button type="button" class="file-upload-btn" onclick="document.getElementById('cv').click()">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              Pilih File CV
+            </button>
+
+            <div class="file-selected-info" id="infoCv">
+              <span class="file-name-text"></span>
+              <button type="button" class="file-remove-btn" title="Hapus file" onclick="clearFileInput('cv')">&times;</button>
+            </div>
+            <div class="error-message">Berkas CV wajib diunggah.</div>
+          </div>
+
+          <!-- 3. Surat Lamaran Kerja (Opsional / Dianjurkan) -->
+          <div class="file-upload-card" id="cardSurat">
+            <div class="file-upload-header">
+              <div class="file-upload-title">
+                <span>📄</span> Surat Lamaran Kerja
+              </div>
+              <span class="file-upload-badge">Dianjurkan</span>
+            </div>
+            <div class="file-upload-desc">
+              Unggah surat permohonan lamaran kerja yang ditujukan kepada Hisana Fried Chicken (PDF / Foto).
+            </div>
+
+            <input type="file" id="suratLamaran" name="suratLamaran" class="file-input-hidden" accept=".pdf,.jpg,.jpeg,.png" />
+            <button type="button" class="file-upload-btn" onclick="document.getElementById('suratLamaran').click()">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              Pilih File Surat Lamaran
+            </button>
+
+            <div class="file-selected-info" id="infoSurat">
+              <span class="file-name-text"></span>
+              <button type="button" class="file-remove-btn" title="Hapus file" onclick="clearFileInput('suratLamaran')">&times;</button>
+            </div>
+          </div>
+
+          <!-- TOMBOL SUBMIT -->
+          <div style="margin-top: 2.25rem;">
             <button type="submit" id="submitBtn" class="btn btn-orange">
-              <span>Kirim Lamaran Sekarang</span> &rarr;
+              <span>Kirim Lamaran & Berkas</span> &rarr;
             </button>
           </div>
         </form>
@@ -195,15 +240,15 @@
     <div class="modal-box" style="text-align: center; max-width: 500px;">
       <div style="font-size: 3.5rem; margin-bottom: 1rem;">🎉</div>
       <h3 style="font-size: 1.5rem; font-weight: 800; color: var(--slate-900); margin-bottom: 0.5rem;">
-        Lamaran Berhasil Dikirim!
+        Lamaran & Berkas Berhasil Dikirim!
       </h3>
       <p style="color: var(--slate-600); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.5;">
-        Terima kasih telah mendaftar di Hisana Fried Chicken Cabang Cirebon. Tim HRD kami akan meninjau data Anda. Jika lolos seleksi berkas, Anda akan dihubungi melalui WhatsApp.
+        Terima kasih telah mendaftar di Hisana Fried Chicken Cabang Cirebon. Tim HRD kami akan meninjau berkas Anda. Jika lolos seleksi awal, Anda akan dihubungi langsung melalui nomor WhatsApp.
       </p>
 
       <div style="background: var(--slate-50); border: 1.5px dashed var(--slate-300); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.75rem;">
         <div style="font-size: 0.8rem; font-weight: 700; color: var(--slate-500); text-transform: uppercase;">
-          Tips untuk Pelamar
+          Perhatian untuk Pelamar
         </div>
         <div style="font-size: 0.88rem; color: var(--slate-700); margin-top: 0.25rem;">
           Pastikan nomor WhatsApp Anda aktif dan selalu cek pesan masuk dalam 1-3 hari kerja.

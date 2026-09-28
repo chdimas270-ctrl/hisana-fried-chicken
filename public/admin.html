@@ -57,7 +57,7 @@
           </div>
           <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--slate-900);">Autentikasi HRD</h1>
           <p style="font-size: 0.9rem; color: var(--slate-600); margin-top: 0.25rem;">
-            Masukkan kata sandi untuk mengelola data pelamar kerja.
+            Masukkan kata sandi untuk mengelola data pelamar dan dokumen rekrutmen.
           </p>
         </div>
 
@@ -89,7 +89,7 @@
       <div class="admin-header">
         <div class="admin-title-wrap">
           <h1>Kelola Data Lamaran</h1>
-          <p>Pantau seluruh formulir masuk, atur ketersediaan lowongan, dan ekspor berkas ke Excel.</p>
+          <p>Pantau data formulir, verifikasi berkas KTP & CV, atur lowongan, dan ekspor data ke Excel.</p>
         </div>
       </div>
 
@@ -105,7 +105,7 @@
 
         <div class="kpi-card kpi-pria">
           <div class="kpi-info">
-            <h4>Pelamar Pria</h4>
+            <h4>Pelamar Pria (Crew)</h4>
             <div class="kpi-value" id="kpiPria">0</div>
           </div>
           <div class="kpi-icon-wrap">👨‍🍳</div>
@@ -113,7 +113,7 @@
 
         <div class="kpi-card kpi-wanita">
           <div class="kpi-info">
-            <h4>Pelamar Wanita</h4>
+            <h4>Pelamar Wanita (Kasir)</h4>
             <div class="kpi-value" id="kpiWanita">0</div>
           </div>
           <div class="kpi-icon-wrap">👩‍🍳</div>
@@ -136,7 +136,7 @@
               <input type="checkbox" id="togglePria" />
               <span class="slider"></span>
             </span>
-            <span>Lowongan Pria</span>
+            <span>Lowongan Pria (Crew)</span>
           </label>
 
           <label class="toggle-card">
@@ -144,7 +144,7 @@
               <input type="checkbox" id="toggleWanita" />
               <span class="slider"></span>
             </span>
-            <span>Lowongan Wanita</span>
+            <span>Lowongan Wanita (Kasir)</span>
           </label>
         </div>
 
@@ -162,13 +162,13 @@
       <div class="search-filter-bar">
         <div class="search-input-wrap">
           <span class="search-icon">🔍</span>
-          <input type="text" id="searchInput" class="input-control" placeholder="Cari nama pelamar, no HP, posisi..." />
+          <input type="text" id="searchInput" class="input-control" placeholder="Cari nama pelamar, nomor WA, domisili, posisi..." />
         </div>
 
         <div class="filter-pills">
           <button class="filter-btn active" data-filter="all">Semua (<span id="countAll">0</span>)</button>
-          <button class="filter-btn" data-filter="pria">Pria (<span id="countPria">0</span>)</button>
-          <button class="filter-btn" data-filter="wanita">Wanita (<span id="countWanita">0</span>)</button>
+          <button class="filter-btn" data-filter="pria">Pria / Crew (<span id="countPria">0</span>)</button>
+          <button class="filter-btn" data-filter="wanita">Wanita / Kasir (<span id="countWanita">0</span>)</button>
         </div>
       </div>
 
@@ -180,10 +180,11 @@
               <tr>
                 <th>Waktu Masuk</th>
                 <th>Kategori</th>
-                <th>Nama Pelamar</th>
-                <th>Kontak & WA</th>
-                <th>Posisi & Pendidikan</th>
-                <th>Jam Kerja</th>
+                <th>Nama & Usia</th>
+                <th>Kontak & WhatsApp</th>
+                <th>Domisili Sekarang</th>
+                <th>Posisi & Referensi</th>
+                <th>Berkas Terlampir</th>
                 <th style="text-align: right;">Aksi</th>
               </tr>
             </thead>
@@ -215,39 +216,42 @@
 
       <div class="modal-info-grid">
         <div class="modal-info-item">
-          <div class="modal-info-label">Tempat, Tgl Lahir</div>
-          <div class="modal-info-val" id="modalTTL">-</div>
+          <div class="modal-info-label">Usia</div>
+          <div class="modal-info-val" id="modalUsia">-</div>
         </div>
         <div class="modal-info-item">
-          <div class="modal-info-label">Status Pernikahan</div>
-          <div class="modal-info-val" id="modalStatusPernikahan">-</div>
+          <div class="modal-info-label">Posisi Pekerjaan</div>
+          <div class="modal-info-val" id="modalPosisi">-</div>
         </div>
         <div class="modal-info-item">
-          <div class="modal-info-label">Pendidikan Terakhir</div>
-          <div class="modal-info-val" id="modalPendidikan">-</div>
+          <div class="modal-info-label">Referensi Kerja</div>
+          <div class="modal-info-val" id="modalReferensi">-</div>
         </div>
         <div class="modal-info-item">
-          <div class="modal-info-label">Ketersediaan Kerja</div>
-          <div class="modal-info-val" id="modalKetersediaan">-</div>
+          <div class="modal-info-label">Email</div>
+          <div class="modal-info-val" id="modalEmail" style="word-break: break-all;">-</div>
         </div>
       </div>
 
       <div class="field">
-        <label style="font-size: 0.85rem; color: var(--slate-600);">Alamat Lengkap</label>
-        <div id="modalAlamat" style="background: var(--slate-50); border: 1px solid var(--slate-200); padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.9rem; color: var(--slate-800);"></div>
+        <label style="font-size: 0.85rem; color: var(--slate-600); font-weight: 700;">Domisili ( Tempat Tinggal Sekarang )</label>
+        <div id="modalDomisili" style="background: var(--slate-50); border: 1px solid var(--slate-200); padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.9rem; color: var(--slate-800);"></div>
       </div>
 
       <div class="field">
-        <label style="font-size: 0.85rem; color: var(--slate-600);">Pengalaman Kerja Sebelumnya</label>
+        <label style="font-size: 0.85rem; color: var(--slate-600); font-weight: 700;">Pengalaman Kerja</label>
         <div id="modalPengalaman" style="background: var(--slate-50); border: 1px solid var(--slate-200); padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.9rem; color: var(--slate-800); white-space: pre-wrap;"></div>
       </div>
 
+      <!-- Dokumen / Berkas Pelamar -->
       <div class="field">
-        <label style="font-size: 0.85rem; color: var(--slate-600);">Alasan Ingin Bekerja di Hisana</label>
-        <div id="modalAlasan" style="background: var(--slate-50); border: 1px solid var(--slate-200); padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.9rem; color: var(--slate-800); white-space: pre-wrap;"></div>
+        <label style="font-size: 0.85rem; color: var(--slate-600); font-weight: 700;">Berkas & Dokumen Persyaratan</label>
+        <div id="modalFilesWrap" style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+          <!-- Dynamically generated file buttons -->
+        </div>
       </div>
 
-      <div style="display: flex; gap: 10px; margin-top: 1.5rem;">
+      <div style="display: flex; gap: 10px; margin-top: 1.75rem;">
         <a id="modalWaBtn" href="#" target="_blank" class="btn btn-success" style="flex: 1;">
           💬 Chat WhatsApp Pelamar
         </a>
@@ -264,7 +268,7 @@
       <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚠️</div>
       <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--slate-900); margin-bottom: 0.5rem;">Hapus Data Lamaran?</h3>
       <p style="color: var(--slate-600); font-size: 0.9rem; margin-bottom: 1.5rem;">
-        Data pelamar atas nama <strong id="deleteCandidateName">-</strong> akan dihapus permanen.
+        Data pelamar atas nama <strong id="deleteCandidateName">-</strong> beserta berkas yang diunggah akan dihapus permanen dari server.
       </p>
 
       <div style="display: flex; gap: 10px;">
