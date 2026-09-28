@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lamaran Kerja — Hisana Fried Chicken Cirebon</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">HISANA <span>FRIED CHICKEN</span></div>
+    <div class="tag">Cirebon</div>
+  </div>
+
+  <main>
+    <div class="hero">
+      <h1>Lowongan Kerja</h1>
+      <p>Bergabunglah bersama tim Hisana Fried Chicken Cirebon. Pilih kategori lamaran sesuai jenis kelamin Anda di bawah ini.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card pria">
+        <div class="stripe"></div>
+        <span id="pill-pria" class="status-pill">memuat...</span>
+        <h2>Lamaran — Pria</h2>
+        <p class="desc">Untuk pelamar laki-laki. Isi data diri dan pengalaman kerja Anda melalui formulir singkat.</p>
+        <a id="btn-pria" class="btn primary" href="/apply.html?g=pria">Isi Formulir</a>
+      </div>
+
+      <div class="card wanita">
+        <div class="stripe"></div>
+        <span id="pill-wanita" class="status-pill">memuat...</span>
+        <h2>Lamaran — Wanita</h2>
+        <p class="desc">Untuk pelamar perempuan. Isi data diri dan pengalaman kerja Anda melalui formulir singkat.</p>
+        <a id="btn-wanita" class="btn primary" href="/apply.html?g=wanita">Isi Formulir</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> Hisana Fried Chicken Cirebon · <a href="/admin.html" style="color:inherit">Admin</a>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    async function loadStatus() {
+      try {
+        const res = await fetch('/api/status');
+        const data = await res.json();
+        if (!data.ok) return;
+        applyStatus('pria', data.status.pria);
+        applyStatus('wanita', data.status.wanita);
+      } catch (e) {
+        console.error('Gagal memuat status lamaran', e);
+      }
+    }
+
+    function applyStatus(gender, isOpen) {
+      const pill = document.getElementById('pill-' + gender);
+      const btn = document.getElementById('btn-' + gender);
+      if (isOpen) {
+        pill.textContent = 'Dibuka';
+        pill.className = 'status-pill open';
+        btn.removeAttribute('aria-disabled');
+        btn.classList.remove('btn');
+        btn.className = 'btn primary';
+      } else {
+        pill.textContent = 'Ditutup';
+        pill.className = 'status-pill closed';
+        btn.removeAttribute('href');
+        btn.className = 'btn';
+        btn.setAttribute('disabled', 'true');
+        btn.textContent = 'Lamaran Ditutup';
+      }
+    }
+
+    loadStatus();
+  </script>
+</body>
+</html>

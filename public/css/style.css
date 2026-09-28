@@ -1,0 +1,168 @@
+/* Hisana Fried Chicken Cirebon — tema minimalis: hitam, oranye, merah, kuning, hijau */
+:root {
+  --black: #171412;
+  --paper: #FAF6F0;
+  --orange: #F2660D;
+  --red: #C22A1F;
+  --yellow: #F2B705;
+  --green: #2E7D46;
+  --line: #E7DFD3;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background: var(--paper);
+  color: var(--black);
+  min-height: 100vh;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  border-bottom: 3px solid var(--black);
+  background: var(--black);
+  color: var(--paper);
+}
+
+.topbar .brand {
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+}
+
+.topbar .brand span { color: var(--yellow); }
+
+.topbar .tag {
+  font-size: 0.78rem;
+  color: #cabfae;
+}
+
+main { max-width: 920px; margin: 0 auto; padding: 48px 24px 80px; }
+
+.hero h1 {
+  font-size: 1.9rem;
+  margin: 0 0 6px;
+  border-left: 6px solid var(--orange);
+  padding-left: 14px;
+}
+
+.hero p { color: #55504a; margin: 0 0 40px 20px; max-width: 60ch; }
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+
+.card {
+  border: 2px solid var(--black);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease;
+}
+
+.card .stripe {
+  position: absolute; top: 0; left: 0; right: 0; height: 6px;
+}
+
+.card.pria .stripe { background: var(--orange); }
+.card.wanita .stripe { background: var(--red); }
+
+.card h2 { margin: 10px 0 4px; font-size: 1.3rem; }
+.card p.desc { color: #665f57; font-size: 0.92rem; margin: 0 0 20px; }
+
+.status-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.78rem; font-weight: 700; padding: 4px 10px;
+  border-radius: 999px; margin-bottom: 14px;
+}
+.status-pill.open { background: #e5f3e8; color: var(--green); border: 1px solid var(--green); }
+.status-pill.closed { background: #f5e6e4; color: var(--red); border: 1px solid var(--red); }
+.status-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+.btn {
+  display: inline-block; border: none; border-radius: 8px; padding: 12px 20px;
+  font-weight: 700; font-size: 0.95rem; cursor: pointer; text-decoration: none;
+  transition: filter 0.15s ease;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn:active { filter: brightness(0.95); }
+.btn.primary { background: var(--orange); color: #fff; }
+.btn.danger { background: var(--red); color: #fff; }
+.btn.dark { background: var(--black); color: #fff; }
+.btn.outline { background: transparent; border: 2px solid var(--black); color: var(--black); }
+.btn[disabled] { background: #d8d2c6; color: #8a8377; cursor: not-allowed; }
+
+footer {
+  text-align: center; padding: 24px; color: #8a8377; font-size: 0.8rem;
+}
+
+/* ---------- Form Lamaran ---------- */
+.form-wrap {
+  border: 2px solid var(--black); border-radius: var(--radius); background: #fff; padding: 32px;
+}
+.form-wrap h2 { margin-top: 0; }
+.field { margin-bottom: 18px; }
+.field label { display: block; font-weight: 700; margin-bottom: 6px; font-size: 0.9rem; }
+.field .hint { font-weight: 400; color: #8a8377; font-size: 0.78rem; }
+.field input, .field select, .field textarea {
+  width: 100%; padding: 10px 12px; border: 1.5px solid var(--line);
+  border-radius: 8px; font-size: 0.95rem; font-family: inherit; background: #fffdf9;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--orange);
+}
+.field textarea { resize: vertical; min-height: 80px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 640px) { .field-row { grid-template-columns: 1fr; } }
+
+.error-text { color: var(--red); font-size: 0.82rem; margin-top: 4px; display: none; }
+.field.has-error input, .field.has-error select, .field.has-error textarea { border-color: var(--red); }
+.field.has-error .error-text { display: block; }
+
+.alert { padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 18px; }
+.alert.success { background: #e5f3e8; color: var(--green); border: 1px solid var(--green); }
+.alert.error { background: #f5e6e4; color: var(--red); border: 1px solid var(--red); }
+
+.back-link { display: inline-block; margin-bottom: 20px; color: var(--black); font-weight: 700; text-decoration: none; font-size: 0.88rem; }
+.back-link:hover { color: var(--orange); }
+
+/* ---------- Admin ---------- */
+.admin-login { max-width: 380px; margin: 80px auto; border: 2px solid var(--black); border-radius: var(--radius); padding: 32px; background: #fff; }
+.admin-login h1 { margin-top: 0; font-size: 1.2rem; }
+
+.admin-toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.toggle-group { display: flex; gap: 12px; flex-wrap: wrap; }
+.toggle-card {
+  border: 1.5px solid var(--line); border-radius: 8px; padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px; background: #fff;
+}
+.switch { position: relative; width: 44px; height: 24px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; inset: 0; background: #d8d2c6; border-radius: 999px; cursor: pointer; transition: 0.15s; }
+.slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: 0.15s; }
+input:checked + .slider { background: var(--green); }
+input:checked + .slider::before { transform: translateX(20px); }
+
+table.data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; background: #fff; }
+table.data-table th, table.data-table td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; }
+table.data-table th { background: var(--black); color: #fff; position: sticky; top: 0; }
+table.data-table tr:nth-child(even) { background: #faf6ef; }
+.table-scroll { overflow-x: auto; border: 2px solid var(--black); border-radius: var(--radius); }
+
+.badge-gender { padding: 2px 8px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; }
+.badge-gender.pria { background: #fde8d8; color: var(--orange); }
+.badge-gender.wanita { background: #fbdedb; color: var(--red); }
+
+.empty-state { text-align: center; padding: 40px; color: #8a8377; }

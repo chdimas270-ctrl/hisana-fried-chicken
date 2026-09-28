@@ -1,0 +1,21 @@
+{
+  "name": "hisana-fried-chicken-lamaran",
+  "version": "1.0.0",
+  "description": "Website lamaran kerja Hisana Fried Chicken Cirebon + panel admin",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "exceljs": "^4.4.0",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.2.0",
+    "helmet": "^7.1.0"
+  }
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin — Hisana Fried Chicken Cirebon</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">HISANA <span>ADMIN</span></div>
+    <div class="tag" id="logout-area"></div>
+  </div>
+
+  <main>
+    <!-- Login view -->
+    <div id="loginView" class="admin-login">
+      <h1>Login Admin</h1>
+      <div id="loginAlert"></div>
+      <form id="loginForm">
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+        </div>
+        <button type="submit" class="btn primary" style="width:100%">Masuk</button>
+      </form>
+    </div>
+
+    <!-- Dashboard view -->
+    <div id="dashboardView" style="display:none">
+      <div class="admin-toolbar">
+        <div class="toggle-group">
+          <label class="toggle-card">
+            <span class="switch">
+              <input type="checkbox" id="toggle-pria" />
+              <span class="slider"></span>
+            </span>
+            Lamaran Pria
+          </label>
+          <label class="toggle-card">
+            <span class="switch">
+              <input type="checkbox" id="toggle-wanita" />
+              <span class="slider"></span>
+            </span>
+            Lamaran Wanita
+          </label>
+        </div>
+        <a class="btn dark" href="/api/admin/export">Download Excel</a>
+      </div>
+
+      <div class="table-scroll">
+        <table class="data-table" id="dataTable">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Kelamin</th>
+              <th>Nama</th>
+              <th>No HP</th>
+              <th>Email</th>
+              <th>Posisi</th>
+              <th>Pendidikan</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+        <div id="emptyState" class="empty-state" style="display:none">Belum ada lamaran masuk.</div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>

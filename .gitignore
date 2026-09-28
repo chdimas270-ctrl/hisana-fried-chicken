@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.production
+
+# Runtime Database & JSON Data (keep .gitkeep)
+data/*.json
+!data/.gitkeep
+data/*.tmp
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pm2.log
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Temp files
+*.tmp

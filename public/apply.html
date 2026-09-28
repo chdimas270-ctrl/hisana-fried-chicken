@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Formulir Lamaran — Hisana Fried Chicken Cirebon</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">HISANA <span>FRIED CHICKEN</span></div>
+    <div class="tag">Cirebon</div>
+  </div>
+
+  <main>
+    <a href="/index.html" class="back-link">&larr; Kembali</a>
+
+    <div class="form-wrap">
+      <h2 id="form-title">Formulir Lamaran</h2>
+      <div id="alert-box"></div>
+
+      <form id="applyForm" novalidate>
+        <input type="hidden" id="jenisKelamin" name="jenisKelamin" />
+
+        <div class="field">
+          <label for="namaLengkap">Nama Lengkap</label>
+          <input type="text" id="namaLengkap" name="namaLengkap" required minlength="3" maxlength="100" />
+          <div class="error-text">Nama minimal 3 karakter.</div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="tempatTanggalLahir">Tempat, Tanggal Lahir</label>
+            <input type="text" id="tempatTanggalLahir" name="tempatTanggalLahir" placeholder="Contoh: Cirebon, 12 Mei 2000" required maxlength="100" />
+            <div class="error-text">Wajib diisi.</div>
+          </div>
+          <div class="field">
+            <label for="statusPernikahan">Status Pernikahan</label>
+            <select id="statusPernikahan" name="statusPernikahan" required>
+              <option value="">Pilih...</option>
+              <option>Belum Menikah</option>
+              <option>Menikah</option>
+            </select>
+            <div class="error-text">Wajib dipilih.</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="alamat">Alamat Lengkap</label>
+          <textarea id="alamat" name="alamat" required minlength="5" maxlength="300"></textarea>
+          <div class="error-text">Alamat wajib diisi.</div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="noHp">Nomor HP / WhatsApp</label>
+            <input type="tel" id="noHp" name="noHp" placeholder="08xxxxxxxxxx" required maxlength="20" />
+            <div class="error-text">Format nomor HP tidak valid.</div>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required maxlength="100" />
+            <div class="error-text">Email tidak valid.</div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="pendidikanTerakhir">Pendidikan Terakhir</label>
+            <select id="pendidikanTerakhir" name="pendidikanTerakhir" required>
+              <option value="">Pilih...</option>
+              <option>SMP</option>
+              <option>SMA/SMK</option>
+              <option>D3</option>
+              <option>S1</option>
+              <option>Lainnya</option>
+            </select>
+            <div class="error-text">Wajib dipilih.</div>
+          </div>
+          <div class="field">
+            <label for="posisiDilamar">Posisi yang Dilamar</label>
+            <select id="posisiDilamar" name="posisiDilamar" required>
+              <option value="">Pilih...</option>
+              <option>Kasir</option>
+              <option>Juru Masak / Dapur</option>
+              <option>Pelayan</option>
+              <option>Kurir / Delivery</option>
+              <option>Cleaning Service</option>
+              <option>Lainnya</option>
+            </select>
+            <div class="error-text">Wajib dipilih.</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="ketersediaan">Ketersediaan Waktu Kerja</label>
+          <select id="ketersediaan" name="ketersediaan" required>
+            <option value="">Pilih...</option>
+            <option>Full Time</option>
+            <option>Part Time</option>
+            <option>Shift Pagi</option>
+            <option>Shift Malam</option>
+            <option>Fleksibel</option>
+          </select>
+          <div class="error-text">Wajib dipilih.</div>
+        </div>
+
+        <div class="field">
+          <label for="pengalamanKerja">Pengalaman Kerja <span class="hint">(opsional)</span></label>
+          <textarea id="pengalamanKerja" name="pengalamanKerja" maxlength="1000" placeholder="Ceritakan pengalaman kerja Anda sebelumnya, jika ada"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="alasanMelamar">Alasan Melamar di Hisana Fried Chicken</label>
+          <textarea id="alasanMelamar" name="alasanMelamar" required minlength="5" maxlength="1000"></textarea>
+          <div class="error-text">Wajib diisi.</div>
+        </div>
+
+        <button type="submit" class="btn primary" id="submitBtn">Kirim Lamaran</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>&copy; <span id="year"></span> Hisana Fried Chicken Cirebon</footer>
+
+  <script src="/js/apply.js"></script>
+</body>
+</html>
