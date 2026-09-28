@@ -92,6 +92,19 @@ body {
   color: var(--text-primary);
 }
 
+.brand-logo-img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
+  transition: transform var(--transition);
+}
+
+.brand-wrap:hover .brand-logo-img {
+  transform: scale(1.05);
+}
+
 .brand-badge {
   background: var(--primary);
   color: var(--bg);
@@ -105,19 +118,37 @@ body {
 .brand-details {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .brand-name {
   font-weight: 800;
   font-size: 1.15rem;
+  line-height: 1.2;
   letter-spacing: -0.02em;
   color: var(--secondary);
 }
 
 .brand-sub {
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--primary);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  margin-top: 2px;
+}
+
+@media (max-width: 600px) {
+  .brand-logo-img {
+    width: 40px;
+    height: 40px;
+  }
+  .brand-name {
+    font-size: 1rem;
+  }
+  .brand-sub {
+    font-size: 0.74rem;
+  }
 }
 
 .navbar-right {
@@ -173,7 +204,9 @@ main {
 }
 
 .hero-pill {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   background: var(--primary-subtle);
   color: var(--primary);
   font-size: 0.85rem;
@@ -181,6 +214,12 @@ main {
   padding: 6px 16px;
   border-radius: var(--radius-full);
   margin-bottom: var(--space-md);
+}
+
+.hero-pill-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .hero h1 {
@@ -510,10 +549,33 @@ footer {
   gap: var(--space-md);
 }
 
+.footer-brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-logo-img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
 .footer-brand {
   font-weight: 800;
   color: var(--secondary);
-  font-size: 0.95rem;
+  font-size: 0.98rem;
+  line-height: 1.2;
+}
+
+.footer-sub {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
 }
 
 .footer-links {
