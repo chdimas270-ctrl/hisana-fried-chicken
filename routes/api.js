@@ -119,13 +119,38 @@ router.post(
 
 router.post('/admin/logout', (req, res) => {
   req.session.destroy(() => {
-    res.clearCookie('connect.sid');
+    res.clearCookie('hisana.sid');
     res.json({ ok: true });
   });
 });
 
 router.get('/admin/session', (req, res) => {
   res.json({ ok: true, isAdmin: !!(req.session && req.session.isAdmin) });
+});
+
+// ---------- ADMIN: ringkasan statistik (KPI) ----------
+router.get('/admin/stats', requireAdmin, (req, res) => {
+  const submissions = db.listSubmissions();
+  const settings = db.getSettings();
+  const total = submissions.length;
+  const pria = submissions.filter((s) => s.jenisKelamin === 'pria').length;
+  const wanita = submissions.filter((s) => s.jenisKelamin === 'wanita').length;
+
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const hariIni = submissions.filter(
+    (s) => s.submittedAt && s.submittedAt.slice(0, 10) === todayStr
+  ).length;
+
+  res.json({
+    ok: true,
+    stats: {
+      total,
+      pria,
+      wanita,
+      hariIni,
+      settings,
+    },
+  });
 });
 
 // ---------- ADMIN: buka/tutup lamaran ----------
