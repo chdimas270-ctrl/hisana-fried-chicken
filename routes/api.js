@@ -262,7 +262,7 @@ router.post(
       return res.status(400).json({ ok: false, message: 'Password wajib diisi.' });
     }
 
-    const hash = process.env.ADMIN_PASSWORD_HASH;
+    let hash = (process.env.ADMIN_PASSWORD_HASH || '').trim().replace(/^['"]|['"]$/g, '').trim();
     if (!hash) {
       return res.status(500).json({
         ok: false,
@@ -270,7 +270,14 @@ router.post(
       });
     }
 
-    const ok = bcrypt.compareSync(req.body.password, hash);
+    const inputPassword = String(req.body.password || '');
+    let ok = false;
+    try {
+      ok = bcrypt.compareSync(inputPassword, hash);
+    } catch (err) {
+      console.error('[AUTH ERROR] Format hash tidak valid:', err.message);
+    }
+
     if (!ok) {
       return res.status(401).json({ ok: false, message: 'Password salah.' });
     }
