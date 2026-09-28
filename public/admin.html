@@ -1,74 +1,285 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Admin — Hisana Fried Chicken Cirebon</title>
-<link rel="stylesheet" href="/css/style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Hisana Fried Chicken Cirebon</title>
+  <meta name="description" content="Panel Manajemen Rekrutmen Pelamar Hisana Fried Chicken Cirebon." />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍗</text></svg>">
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div class="topbar">
-    <div class="brand">HISANA <span>ADMIN</span></div>
-    <div class="tag" id="logout-area"></div>
-  </div>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="/admin.html" class="brand-link">
+        <div class="brand-icon">🍗</div>
+        <div class="brand-text">
+          <div class="brand-title">HISANA <span>PANEL HRD</span></div>
+          <div class="brand-sub">Recruitment Management</div>
+        </div>
+      </a>
+
+      <div class="topbar-right" id="userControls">
+        <a href="/" class="admin-nav-link" target="_blank" title="Lihat Website Publik">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+          </svg>
+          Lihat Web
+        </a>
+        <div id="logoutWrap" style="display:none">
+          <button id="logoutBtn" class="btn btn-outline" style="padding: 6px 14px; font-size: 0.82rem; color: var(--slate-200); border-color: rgba(255,255,255,0.2);">
+            Keluar
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
 
   <main>
-    <!-- Login view -->
-    <div id="loginView" class="admin-login">
-      <h1>Login Admin</h1>
-      <div id="loginAlert"></div>
-      <form id="loginForm">
-        <div class="field">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" required />
+    <!-- VIEW 1: LOGIN ADMIN -->
+    <section id="loginView" class="admin-login-wrap">
+      <div class="form-card" style="padding: 2.25rem;">
+        <div style="text-align: center; margin-bottom: 1.75rem;">
+          <div style="width: 54px; height: 54px; border-radius: var(--radius-lg); background: var(--primary-orange-light); color: var(--primary-orange); display: inline-flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 0.75rem;">
+            🔒
+          </div>
+          <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--slate-900);">Autentikasi HRD</h1>
+          <p style="font-size: 0.9rem; color: var(--slate-600); margin-top: 0.25rem;">
+            Masukkan kata sandi untuk mengelola data pelamar kerja.
+          </p>
         </div>
-        <button type="submit" class="btn primary" style="width:100%">Masuk</button>
-      </form>
-    </div>
 
-    <!-- Dashboard view -->
-    <div id="dashboardView" style="display:none">
-      <div class="admin-toolbar">
-        <div class="toggle-group">
-          <label class="toggle-card">
-            <span class="switch">
-              <input type="checkbox" id="toggle-pria" />
-              <span class="slider"></span>
-            </span>
-            Lamaran Pria
-          </label>
-          <label class="toggle-card">
-            <span class="switch">
-              <input type="checkbox" id="toggle-wanita" />
-              <span class="slider"></span>
-            </span>
-            Lamaran Wanita
-          </label>
+        <div id="loginAlert"></div>
+
+        <form id="loginForm">
+          <div class="field">
+            <label for="password">Password Admin</label>
+            <div class="password-input-wrap">
+              <input type="password" id="password" name="password" class="input-control" placeholder="Masukkan password..." required />
+              <button type="button" id="togglePasswordBtn" class="password-toggle-btn" title="Lihat/Sembunyikan password">
+                👁️
+              </button>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.5rem;">
+            <button type="submit" id="btnLogin" class="btn btn-orange">
+              Masuk ke Dashboard &rarr;
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- VIEW 2: DASHBOARD ADMIN -->
+    <section id="dashboardView" style="display:none">
+      <!-- Title & Greeting -->
+      <div class="admin-header">
+        <div class="admin-title-wrap">
+          <h1>Kelola Data Lamaran</h1>
+          <p>Pantau seluruh formulir masuk, atur ketersediaan lowongan, dan ekspor berkas ke Excel.</p>
         </div>
-        <a class="btn dark" href="/api/admin/export">Download Excel</a>
       </div>
 
-      <div class="table-scroll">
-        <table class="data-table" id="dataTable">
-          <thead>
-            <tr>
-              <th>Tanggal</th>
-              <th>Kelamin</th>
-              <th>Nama</th>
-              <th>No HP</th>
-              <th>Email</th>
-              <th>Posisi</th>
-              <th>Pendidikan</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-        <div id="emptyState" class="empty-state" style="display:none">Belum ada lamaran masuk.</div>
+      <!-- KPI Summary Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card kpi-total">
+          <div class="kpi-info">
+            <h4>Total Pelamar</h4>
+            <div class="kpi-value" id="kpiTotal">0</div>
+          </div>
+          <div class="kpi-icon-wrap">📋</div>
+        </div>
+
+        <div class="kpi-card kpi-pria">
+          <div class="kpi-info">
+            <h4>Pelamar Pria</h4>
+            <div class="kpi-value" id="kpiPria">0</div>
+          </div>
+          <div class="kpi-icon-wrap">👨‍🍳</div>
+        </div>
+
+        <div class="kpi-card kpi-wanita">
+          <div class="kpi-info">
+            <h4>Pelamar Wanita</h4>
+            <div class="kpi-value" id="kpiWanita">0</div>
+          </div>
+          <div class="kpi-icon-wrap">👩‍🍳</div>
+        </div>
+
+        <div class="kpi-card kpi-today">
+          <div class="kpi-info">
+            <h4>Masuk Hari Ini</h4>
+            <div class="kpi-value" id="kpiToday">0</div>
+          </div>
+          <div class="kpi-icon-wrap">⚡</div>
+        </div>
       </div>
-    </div>
+
+      <!-- Toolbar: Buka/Tutup Lamaran & Ekspor -->
+      <div class="admin-toolbar-card">
+        <div class="switches-group">
+          <label class="toggle-card">
+            <span class="switch">
+              <input type="checkbox" id="togglePria" />
+              <span class="slider"></span>
+            </span>
+            <span>Lowongan Pria</span>
+          </label>
+
+          <label class="toggle-card">
+            <span class="switch">
+              <input type="checkbox" id="toggleWanita" />
+              <span class="slider"></span>
+            </span>
+            <span>Lowongan Wanita</span>
+          </label>
+        </div>
+
+        <div>
+          <a href="/api/admin/export" class="btn btn-dark" style="width: auto; padding: 0.65rem 1.4rem;">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            Download Data (.xlsx)
+          </a>
+        </div>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="search-filter-bar">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" class="input-control" placeholder="Cari nama pelamar, no HP, posisi..." />
+        </div>
+
+        <div class="filter-pills">
+          <button class="filter-btn active" data-filter="all">Semua (<span id="countAll">0</span>)</button>
+          <button class="filter-btn" data-filter="pria">Pria (<span id="countPria">0</span>)</button>
+          <button class="filter-btn" data-filter="wanita">Wanita (<span id="countWanita">0</span>)</button>
+        </div>
+      </div>
+
+      <!-- Submissions Table Card -->
+      <div class="table-container">
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Waktu Masuk</th>
+                <th>Kategori</th>
+                <th>Nama Pelamar</th>
+                <th>Kontak & WA</th>
+                <th>Posisi & Pendidikan</th>
+                <th>Jam Kerja</th>
+                <th style="text-align: right;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Rendered via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display:none">
+          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📭</div>
+          <h3>Belum Ada Data Pelamar</h3>
+          <p>Belum ada pelamar yang sesuai dengan pencarian atau filter yang dipilih.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
+  <!-- CANDIDATE DETAIL MODAL -->
+  <div id="detailModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h3 id="modalName">Detail Calon Karyawan</h3>
+          <div id="modalSubMeta" style="font-size: 0.85rem; color: var(--slate-500); margin-top: 2px;"></div>
+        </div>
+        <button id="closeDetailBtn" class="modal-close-btn">&times;</button>
+      </div>
+
+      <div class="modal-info-grid">
+        <div class="modal-info-item">
+          <div class="modal-info-label">Tempat, Tgl Lahir</div>
+          <div class="modal-info-val" id="modalTTL">-</div>
+        </div>
+        <div class="modal-info-item">
+          <div class="modal-info-label">Status Pernikahan</div>
+          <div class="modal-info-val" id="modalStatusPernikahan">-</div>
+        </div>
+        <div class="modal-info-item">
+          <div class="modal-info-label">Pendidikan Terakhir</div>
+          <div class="modal-info-val" id="modalPendidikan">-</div>
+        </div>
+        <div class="modal-info-item">
+          <div class="modal-info-label">Ketersediaan Kerja</div>
+          <div class="modal-info-val" id="modalKetersediaan">-</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label style="font-size: 0.85rem; color: var(--slate-600);">Alamat Lengkap</label>
+        <div id="modalAlamat" style="background: var(--slate-50); border: 1px solid var(--slate-200); padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.9rem; color: var(--slate-800);"></div>
+      </div>
+
+      <div class="field">
+        <label style="font-size: 0.85rem; color: var(--slate-600);">Pengalaman Kerja Sebelumnya</label>
+        <div id="modalPengalaman" style="background: var(--slate-50); border: 1px solid var(--slate-200); padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.9rem; color: var(--slate-800); white-space: pre-wrap;"></div>
+      </div>
+
+      <div class="field">
+        <label style="font-size: 0.85rem; color: var(--slate-600);">Alasan Ingin Bekerja di Hisana</label>
+        <div id="modalAlasan" style="background: var(--slate-50); border: 1px solid var(--slate-200); padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.9rem; color: var(--slate-800); white-space: pre-wrap;"></div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 1.5rem;">
+        <a id="modalWaBtn" href="#" target="_blank" class="btn btn-success" style="flex: 1;">
+          💬 Chat WhatsApp Pelamar
+        </a>
+        <button id="modalCloseActionBtn" class="btn btn-outline" style="width: auto;">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRMATION MODAL -->
+  <div id="deleteModal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 440px; text-align: center;">
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚠️</div>
+      <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--slate-900); margin-bottom: 0.5rem;">Hapus Data Lamaran?</h3>
+      <p style="color: var(--slate-600); font-size: 0.9rem; margin-bottom: 1.5rem;">
+        Data pelamar atas nama <strong id="deleteCandidateName">-</strong> akan dihapus permanen.
+      </p>
+
+      <div style="display: flex; gap: 10px;">
+        <button id="confirmDeleteBtn" class="btn btn-red" style="flex: 1;">
+          Ya, Hapus Permanen
+        </button>
+        <button id="cancelDeleteBtn" class="btn btn-outline" style="flex: 1;">
+          Batal
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
   <script src="/js/admin.js"></script>
+  <script src="js/admin.js"></script>
 </body>
 </html>

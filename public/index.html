@@ -1,81 +1,277 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Lamaran Kerja — Hisana Fried Chicken Cirebon</title>
-<link rel="stylesheet" href="/css/style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lowongan Kerja — Hisana Fried Chicken Cirebon</title>
+  <meta name="description" content="Portal Rekrutmen Resmi Hisana Fried Chicken Cabang Cirebon. Daftar lowongan kerja untuk Pria & Wanita dengan proses seleksi transparan dan cepat." />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍗</text></svg>">
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet (Mendukung path absolute & relative agar tahan banting di VPS) -->
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Inline Fallback untuk memastikan halaman tetap rapi jika koneksi aset lambat -->
+  <style>
+    :root { --primary-orange: #f59e0b; --primary-red: #dc2626; --slate-900: #0f172a; }
+    body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; background: #f8fafc; color: #0f172a; margin: 0; }
+  </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="brand">HISANA <span>FRIED CHICKEN</span></div>
-    <div class="tag">Cirebon</div>
-  </div>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="/" class="brand-link" id="brandLogo">
+        <div class="brand-icon">🍗</div>
+        <div class="brand-text">
+          <div class="brand-title">HISANA <span>FRIED CHICKEN</span></div>
+          <div class="brand-sub">Official Recruitment Portal</div>
+        </div>
+      </a>
+
+      <div class="topbar-right">
+        <div class="tag-badge">
+          <span class="dot"></span> Cabang Cirebon
+        </div>
+        <a href="/admin.html" class="admin-nav-link" title="Masuk ke Panel Pengelola">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+          Admin
+        </a>
+      </div>
+    </div>
+  </header>
 
   <main>
-    <div class="hero">
-      <h1>Lowongan Kerja</h1>
-      <p>Bergabunglah bersama tim Hisana Fried Chicken Cirebon. Pilih kategori lamaran sesuai jenis kelamin Anda di bawah ini.</p>
-    </div>
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-pill">
+        <span>✨</span> Kesempatan Bergabung Bersama Kami
+      </div>
+      <h1>Karier & Lowongan Kerja<br /><span class="highlight-orange">Hisana Fried Chicken Cirebon</span></h1>
+      <p>
+        Mari berkembang dan raih karier terbaikmu di jaringan restoran ayam krispi favorit keluarga Indonesia. Pilih kategori pelamar di bawah ini untuk memulai pengisian berkas secara online.
+      </p>
 
-    <div class="cards">
-      <div class="card pria">
-        <div class="stripe"></div>
-        <span id="pill-pria" class="status-pill">memuat...</span>
+      <div class="hero-features">
+        <span class="feature-chip">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          Proses Seleksi Transparan
+        </span>
+        <span class="feature-chip">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          Penempatan Area Cirebon
+        </span>
+        <span class="feature-chip">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          Tanpa Dipungut Biaya
+        </span>
+      </div>
+    </section>
+
+    <!-- CARDS PILIHAN LAMARAN -->
+    <section class="cards-grid">
+      <!-- KARTU PRIA -->
+      <article class="recruitment-card pria" id="card-pria">
+        <div class="card-accent-bar"></div>
+        <div class="card-header-meta">
+          <div class="card-category-icon">👨‍🍳</div>
+          <div id="pill-pria" class="status-pill open">
+            <span class="beacon"></span>
+            <span class="pill-label">Memuat status...</span>
+          </div>
+        </div>
+
         <h2>Lamaran — Pria</h2>
-        <p class="desc">Untuk pelamar laki-laki. Isi data diri dan pengalaman kerja Anda melalui formulir singkat.</p>
-        <a id="btn-pria" class="btn primary" href="/apply.html?g=pria">Isi Formulir</a>
+        <p class="card-desc">
+          Dibuka untuk posisi Kru Dapur / Cook, Pramusaji, Kasir, atau Pengiriman (Delivery).
+        </p>
+
+        <ul class="req-list">
+          <li>
+            <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            Pria, usia 18 - 28 tahun
+          </li>
+          <li>
+            <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            Pendidikan minimal SMP / SMA / SMK Sederajat
+          </li>
+          <li>
+            <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            Jujur, pekerja keras, & siap bekerja dalam sistem shift
+          </li>
+        </ul>
+
+        <a id="btn-pria" class="btn btn-orange" href="/apply.html?g=pria">
+          Isi Formulir Pria &rarr;
+        </a>
+      </article>
+
+      <!-- KARTU WANITA -->
+      <article class="recruitment-card wanita" id="card-wanita">
+        <div class="card-accent-bar"></div>
+        <div class="card-header-meta">
+          <div class="card-category-icon">👩‍🍳</div>
+          <div id="pill-wanita" class="status-pill open">
+            <span class="beacon"></span>
+            <span class="pill-label">Memuat status...</span>
+          </div>
+        </div>
+
+        <h2>Lamaran — Wanita</h2>
+        <p class="card-desc">
+          Dibuka untuk posisi Kasir, Frontliner / Pelayanan Pelanggan, dan Operasional Outlet.
+        </p>
+
+        <ul class="req-list">
+          <li>
+            <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            Wanita, usia 18 - 28 tahun
+          </li>
+          <li>
+            <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            Pendidikan minimal SMP / SMA / SMK Sederajat
+          </li>
+          <li>
+            <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            Ramah, komunikatif, teliti, & berpenampilan rapi
+          </li>
+        </ul>
+
+        <a id="btn-wanita" class="btn btn-red" href="/apply.html?g=wanita">
+          Isi Formulir Wanita &rarr;
+        </a>
+      </article>
+    </section>
+
+    <!-- SECTION: BENEFIT -->
+    <section>
+      <div class="section-title-wrap">
+        <h2 class="section-title">Keuntungan Bergabung di Hisana</h2>
+        <p class="section-subtitle">Kami mengutamakan kesejahteraan, perkembangan skill, dan kenyamanan kerja seluruh kru.</p>
       </div>
 
-      <div class="card wanita">
-        <div class="stripe"></div>
-        <span id="pill-wanita" class="status-pill">memuat...</span>
-        <h2>Lamaran — Wanita</h2>
-        <p class="desc">Untuk pelamar perempuan. Isi data diri dan pengalaman kerja Anda melalui formulir singkat.</p>
-        <a id="btn-wanita" class="btn primary" href="/apply.html?g=wanita">Isi Formulir</a>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">💵</div>
+          <h3>Penghasilan Menarik</h3>
+          <p>Gaji pokok, insentif performa penjualan outlet, dan uang makan harian yang kompetitif.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">📈</div>
+          <h3>Jenjang Karier Nyata</h3>
+          <p>Peluang naik jenjang menjadi Senior Cook, Leader Shift, hingga Supervisor Outlet.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">🎓</div>
+          <h3>Pelatihan Berkala</h3>
+          <p>Pembekalan SOP restoran higienis, standar pelayanan konsumen, dan keamanan pangan.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">🤝</div>
+          <h3>Tim Solid & Kekeluargaan</h3>
+          <p>Lingkungan kerja yang suportif, saling membantu, ramah, dan bebas dari senioritas negatif.</p>
+        </div>
       </div>
-    </div>
+    </section>
+
+    <!-- SECTION: TAHAPAN REKRUTMEN -->
+    <section class="workflow-section">
+      <div class="section-title-wrap">
+        <h2 class="section-title">Alur Pendaftaran Mudah</h2>
+        <p class="section-subtitle">Ikuti 4 langkah sederhana dari pendaftaran hingga mulai bertugas</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <h4>Isi Formulir</h4>
+          <p>Lengkapi data diri dan riwayat pengalaman melalui formulir online.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <h4>Seleksi Berkas</h4>
+          <p>Tim HRD meninjau data Anda sesuai kebutuhan formasi outlet.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <h4>Wawancara / Walk-in</h4>
+          <p>Kandidat terpilih dihubungi via WhatsApp untuk tes & wawancara.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <h4>Mulai Bekerja</h4>
+          <p>Briefing SOP & siap bekerja bersama keluarga besar Hisana Cirebon!</p>
+        </div>
+      </div>
+    </section>
   </main>
 
+  <!-- FOOTER -->
   <footer>
-    &copy; <span id="year"></span> Hisana Fried Chicken Cirebon · <a href="/admin.html" style="color:inherit">Admin</a>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">HISANA <span>FRIED CHICKEN</span> CIREBON</div>
+        <div class="footer-copy">&copy; <span id="year"></span> Hak Cipta Dilindungi. Rekrutmen resmi Hisana Fried Chicken.</div>
+      </div>
+      <div class="footer-links">
+        <a href="/">Beranda</a>
+        <a href="/apply.html?g=pria">Pria</a>
+        <a href="/apply.html?g=wanita">Wanita</a>
+        <a href="/admin.html">Login Admin</a>
+      </div>
+    </div>
   </footer>
 
+  <!-- JAVASCRIPT LOGIC -->
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    async function loadStatus() {
+    async function loadRecruitmentStatus() {
       try {
         const res = await fetch('/api/status');
         const data = await res.json();
-        if (!data.ok) return;
-        applyStatus('pria', data.status.pria);
-        applyStatus('wanita', data.status.wanita);
-      } catch (e) {
-        console.error('Gagal memuat status lamaran', e);
+        if (!data || !data.ok) return;
+
+        updateCategoryCard('pria', data.status.pria);
+        updateCategoryCard('wanita', data.status.wanita);
+      } catch (err) {
+        console.warn('Gagal memuat status rekrutmen:', err);
       }
     }
 
-    function applyStatus(gender, isOpen) {
+    function updateCategoryCard(gender, isOpen) {
       const pill = document.getElementById('pill-' + gender);
       const btn = document.getElementById('btn-' + gender);
+      const label = pill.querySelector('.pill-label');
+
       if (isOpen) {
-        pill.textContent = 'Dibuka';
         pill.className = 'status-pill open';
-        btn.removeAttribute('aria-disabled');
-        btn.classList.remove('btn');
-        btn.className = 'btn primary';
+        label.textContent = 'Pendaftaran Dibuka';
+        btn.removeAttribute('disabled');
+        btn.classList.remove('disabled');
+        btn.setAttribute('href', `/apply.html?g=${gender}`);
+        btn.innerHTML = `Isi Formulir ${gender === 'pria' ? 'Pria' : 'Wanita'} &rarr;`;
       } else {
-        pill.textContent = 'Ditutup';
         pill.className = 'status-pill closed';
+        label.textContent = 'Pendaftaran Ditutup';
         btn.removeAttribute('href');
-        btn.className = 'btn';
         btn.setAttribute('disabled', 'true');
-        btn.textContent = 'Lamaran Ditutup';
+        btn.classList.add('disabled');
+        btn.textContent = 'Lamaran Sedang Ditutup';
       }
     }
 
-    loadStatus();
+    loadRecruitmentStatus();
   </script>
 </body>
 </html>
