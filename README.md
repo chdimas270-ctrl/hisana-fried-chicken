@@ -130,15 +130,26 @@ Setiap kali Anda melakukan perubahan di komputer lokal:
 
 ---
 
-## ✨ Fitur-Fitur Utama
+## ✨ Fitur & Keamanan Formulir Terbaru
 
-- **Desain Premium Brand Hisana:** Skema warna khas Hisana (Crispy Golden Amber & Flame Red), tipografi Plus Jakarta Sans, responsif untuk smartphone & desktop.
-- **Kategori Khusus Pria & Wanita:** Persyaratan yang disesuaikan dan indikator status pendaftaran real-time (Dibuka / Ditutup).
-- **Formulir Interaktif:** Validasi otomatis nomor WhatsApp (+62 / 08), deteksi formasi lamaran, dan konfirmasi pengiriman tiket pelamar.
-- **Panel Admin HRD:**
-  - KPI ringkasan (Total pelamar, Pria, Wanita, Hari ini).
-  - Saklar pembuka/penutup lowongan seketika.
-  - Pencarian dan filter pelamar instan.
-  - Modal detail profil lengkap pelamar.
-  - Tombol **Direct WhatsApp Chat** berformat pesan undangan wawancara resmi.
-  - Download seluruh berkas lamaran ke format Microsoft Excel (`.xlsx`).
+- **Struktur Formulir Baru:**
+  1. **Nama Lengkap**
+  2. **Usia**
+  3. **Domisili (Tempat Tinggal Sekarang)**
+  4. **Email**
+  5. **Nomor WhatsApp** (auto-format +62/08)
+  6. **Posisi Pekerjaan:**
+     - Kategori Perempuan: Otomatis terkunci pada **Kasir**
+     - Kategori Laki-laki: Otomatis terkunci pada **Crew**
+  7. **Pengalaman Kerja**
+  8. **Referensi Kerja di Hisana:** Pilihan ganda (*Anggota Keluarga, Teman, Sosial Media*)
+  9. **Unggah Dokumen:** *Surat Lamaran Kerja, CV, dan Foto KTP*
+
+### 🛡️ Arsitektur Keamanan Unggah Berkas (*Zero-Trust File Upload*)
+Tombol unggah berkas telah dibentengi dengan standar keamanan tingkat tinggi untuk mencegah eksploitasi dan serangan peretas:
+1. **Penyimpanan Terisolasi:** Berkas diunggah ke folder `uploads/` yang berada di luar jangkauan publik (`public/`). Berkas **tidak dapat diakses atau dieksekusi secara langsung lewat URL web**.
+2. **UUID Cryptographic Renaming:** Nama file asli yang diunggah pengguna tidak pernah disimpan di disk. Server membuat nama acak menggunakan UUID (`fotoKtp-3a8e...jpg`). Hal ini **100% menangkal serangan Path Traversal (`../../`)** dan pencegahan penimpaan file sistem.
+3. **Whitelist Ketat Ekstensi & MIME:** Hanya berkas berformat `.pdf`, `.jpg`, `.jpeg`, dan `.png` dengan ukuran maksimal 5 MB yang diterima. Seluruh ekstensi skrip/executable (`.js`, `.php`, `.html`, `.svg`, `.sh`, `.exe`, dll.) ditolak seketika sebelum menyentuh disk.
+4. **Proteksi Hak Akses (Otentikasi Admin):** Berkas hanya dapat dibuka oleh admin HRD yang terautentikasi melalui rute aman `/api/admin/files/:filename`. Pengunjung luar atau pelamar lain tidak memiliki izin melihat berkas KTP/CV.
+5. **Header Anti-Eksekusi (Nosniff & CSP):** Saat admin melihat berkas, server mengirimkan header `Content-Security-Policy: default-src 'none'` dan `X-Content-Type-Options: nosniff` sehingga browser tidak akan pernah menjalankan skrip tersembunyi.
+6. **Pembersihan Otomatis:** Berkas sementara akan langsung dihapus dari disk jika pengiriman formulir gagal, dan berkas di disk otomatis dibersihkan saat admin menghapus data pelamar.
