@@ -432,21 +432,33 @@ router.get('/admin/files/:filename', requireAdmin, async (req, res) => {
 });
 
 // ---------- ADMIN: hapus data lamaran & berkas terkait ----------
-router.delete('/admin/submissions/:id', requireAdmin, (req, res) => {
+router.delete('/admin/submissions/:id', requireAdmin, async (req, res) => {
   const candidate = db.getSubmission ? db.getSubmission(req.params.id) : null;
   if (candidate && candidate.files) {
+    const deletePromises = [];
     Object.values(candidate.files).forEach((fileObj) => {
       if (fileObj && fileObj.storedFilename) {
-        const filePath = path.join(UPLOAD_DIR, path.basename(fileObj.storedFilename));
+        const safeName = path.basename(fileObj.storedFilename);
+        const filePath = path.join(UPLOAD_DIR, safeName);
         if (fs.existsSync(filePath)) {
           try {
             fs.unlinkSync(filePath);
           } catch (e) {
-            console.error('Gagal menghapus berkas pelamar:', e);
+            console.error('Gagal menghapus berkas pelamar lokal:', e);
           }
+        }
+        if (db.deleteFile) {
+          deletePromises.push(db.deleteFile(safeName));
         }
       }
     });
+    if (deletePromises.length > 0) {
+      try {
+        await Promise.all(deletePromises);
+      } catch (e) {
+        console.warn('[DELETE PROMISE WARN]', e.message);
+      }
+    }
   }
 
   const removed = db.deleteSubmission(req.params.id);

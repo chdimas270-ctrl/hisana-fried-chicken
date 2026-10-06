@@ -218,6 +218,18 @@ async function getFile(filename) {
   return null;
 }
 
+async function deleteFile(filename) {
+  const db = await ensureMongoConnected();
+  if (db) {
+    try {
+      await db.collection('files').deleteOne({ filename });
+      console.log(`[DB] Berkas ${filename} berhasil dihapus dari MongoDB Cloud!`);
+    } catch (e) {
+      console.error('[DB ERROR deleteFile]', e.message);
+    }
+  }
+}
+
 module.exports = {
   init,
   ensureMongoConnected,
@@ -229,4 +241,5 @@ module.exports = {
   deleteSubmission,
   saveFile,
   getFile,
+  deleteFile,
 };
