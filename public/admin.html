@@ -123,10 +123,13 @@
           </label>
         </div>
 
-        <div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <a href="/api/admin/export" class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 0.88rem;">
             📊 Download Excel (.xlsx)
           </a>
+          <button id="btnDeleteAll" class="btn" style="width: auto; padding: 8px 16px; font-size: 0.88rem; background: #FEF2F2; color: #DC2626; border: 1px solid #FCA5A5; font-weight: 600; cursor: pointer;">
+            🗑️ Hapus Semua Data
+          </button>
         </div>
       </div>
 
@@ -248,6 +251,26 @@
           Ya, Hapus
         </button>
         <button id="cancelDeleteBtn" class="btn btn-outline" style="flex: 1;">
+          Batal
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELETE ALL CONFIRMATION MODAL -->
+  <div id="deleteAllModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 440px; text-align: center;">
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🗑️</div>
+      <h3 style="font-size: 1.25rem; font-weight: 800; color: #DC2626; margin-bottom: 0.5rem;">Hapus SEMUA Data Pelamar?</h3>
+      <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.5; margin-bottom: 1.5rem;">
+        Seluruh data pelamar dan <strong>semua berkas lampiran (Foto KTP, CV, Surat)</strong> akan dihapus bersih secara permanen dari server dan database Cloud. Tindakan ini tidak dapat dibatalkan.
+      </p>
+
+      <div style="display: flex; gap: 10px;">
+        <button id="confirmDeleteAllBtn" class="btn" style="flex: 1; background: #DC2626;">
+          Ya, Hapus Semua
+        </button>
+        <button id="cancelDeleteAllBtn" class="btn btn-outline" style="flex: 1;">
           Batal
         </button>
       </div>

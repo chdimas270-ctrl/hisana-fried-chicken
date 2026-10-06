@@ -466,6 +466,35 @@ router.delete('/admin/submissions/:id', requireAdmin, async (req, res) => {
   res.json({ ok: true });
 });
 
+// ---------- ADMIN: hapus SEMUA data pelamar & seluruh berkas sekaligus ----------
+router.delete('/admin/submissions', requireAdmin, async (req, res) => {
+  // Hapus semua file di folder lokal uploads/ jika ada
+  if (fs.existsSync(UPLOAD_DIR)) {
+    try {
+      const files = fs.readdirSync(UPLOAD_DIR);
+      files.forEach((f) => {
+        try {
+          fs.unlinkSync(path.join(UPLOAD_DIR, f));
+        } catch (e) {}
+      });
+    } catch (e) {
+      console.error('[CLEANUP ALL WARN]', e.message);
+    }
+  }
+
+  // Hapus semua file di MongoDB Cloud
+  if (db.deleteAllFiles) {
+    await db.deleteAllFiles();
+  }
+
+  // Hapus semua data pelamar di memory, file JSON, dan MongoDB
+  if (db.clearAllSubmissions) {
+    await db.clearAllSubmissions();
+  }
+
+  res.json({ ok: true, message: 'Seluruh data pelamar dan berkas berhasil dihapus bersih.' });
+});
+
 // ---------- ADMIN: export Excel ----------
 router.get('/admin/export', requireAdmin, async (req, res) => {
   const all = db.listSubmissions().sort((a, b) => (a.submittedAt < b.submittedAt ? 1 : -1));

@@ -230,6 +230,33 @@ async function deleteFile(filename) {
   }
 }
 
+async function clearAllSubmissions() {
+  inMemorySubmissions = [];
+  writeJSONAtomic(SUBMISSIONS_FILE, inMemorySubmissions);
+
+  const db = await ensureMongoConnected();
+  if (db) {
+    try {
+      await db.collection('submissions').deleteMany({});
+      console.log('[DB] Semua data pelamar di MongoDB berhasil dibersihkan!');
+    } catch (e) {
+      console.error('[DB ERROR clearAllSubmissions]', e.message);
+    }
+  }
+}
+
+async function deleteAllFiles() {
+  const db = await ensureMongoConnected();
+  if (db) {
+    try {
+      await db.collection('files').deleteMany({});
+      console.log('[DB] Semua berkas di MongoDB berhasil dibersihkan!');
+    } catch (e) {
+      console.error('[DB ERROR deleteAllFiles]', e.message);
+    }
+  }
+}
+
 module.exports = {
   init,
   ensureMongoConnected,
@@ -239,7 +266,9 @@ module.exports = {
   getSubmission,
   addSubmission,
   deleteSubmission,
+  clearAllSubmissions,
   saveFile,
   getFile,
   deleteFile,
+  deleteAllFiles,
 };

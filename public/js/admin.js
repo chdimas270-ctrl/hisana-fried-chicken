@@ -471,15 +471,65 @@
     });
   }
 
+  // Delete All Logic
+  const btnDeleteAll = document.getElementById('btnDeleteAll');
+  const deleteAllModal = document.getElementById('deleteAllModal');
+  const confirmDeleteAllBtn = document.getElementById('confirmDeleteAllBtn');
+  const cancelDeleteAllBtn = document.getElementById('cancelDeleteAllBtn');
+
+  if (btnDeleteAll && deleteAllModal) {
+    btnDeleteAll.addEventListener('click', () => {
+      if (!allSubmissions || allSubmissions.length === 0) {
+        alert('Tidak ada data pelamar untuk dihapus.');
+        return;
+      }
+      deleteAllModal.classList.add('active');
+    });
+
+    if (cancelDeleteAllBtn) {
+      cancelDeleteAllBtn.addEventListener('click', () => {
+        deleteAllModal.classList.remove('active');
+      });
+    }
+
+    if (confirmDeleteAllBtn) {
+      confirmDeleteAllBtn.addEventListener('click', async () => {
+        confirmDeleteAllBtn.disabled = true;
+        confirmDeleteAllBtn.textContent = 'Menghapus Semua...';
+
+        try {
+          const res = await fetch('/api/admin/submissions', {
+            method: 'DELETE',
+          });
+          const data = await res.json();
+          if (data && data.ok) {
+            deleteAllModal.classList.remove('active');
+            await loadStats();
+            await loadSubmissions();
+            alert('Semua data pelamar dan berkas berhasil dihapus bersih!');
+          } else {
+            alert(data.message || 'Gagal menghapus semua data.');
+          }
+        } catch (e) {
+          alert('Terjadi kesalahan jaringan.');
+        } finally {
+          confirmDeleteAllBtn.disabled = false;
+          confirmDeleteAllBtn.textContent = 'Ya, Hapus Semua';
+        }
+      });
+    }
+  }
+
   // Close modals on Escape key or outside click
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      detailModal.classList.remove('active');
-      deleteModal.classList.remove('active');
+      if (detailModal) detailModal.classList.remove('active');
+      if (deleteModal) deleteModal.classList.remove('active');
+      if (deleteAllModal) deleteAllModal.classList.remove('active');
     }
   });
 
-  [detailModal, deleteModal].forEach((overlay) => {
+  [detailModal, deleteModal, deleteAllModal].filter(Boolean).forEach((overlay) => {
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) {
         overlay.classList.remove('active');
