@@ -106,7 +106,7 @@ sudo systemctl reload nginx
 ### 5. Pasang SSL Gratis (HTTPS) dengan Certbot
 ```bash
 sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+sudo certbot --nginx -d hisanacirebon.web.id -d www.hisanacirebon.web.id
 ```
 *Setelah SSL aktif, Anda dapat mengubah `FORCE_HTTPS=true` di file `.env`.*
 
