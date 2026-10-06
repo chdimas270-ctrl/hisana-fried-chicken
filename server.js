@@ -60,7 +60,7 @@ if (enableStrictCsp) {
 
 app.use(express.json({ limit: '200kb' }));
 app.use(express.urlencoded({ extended: true, limit: '200kb' }));
-app.use(cookieParser());
+app.use(cookieParser(process.env.SESSION_SECRET || 'dev-secret-hisana-cirebon-2024-secure-key'));
 
 // Konfigurasi Session
 app.use(
@@ -151,13 +151,17 @@ app.use((req, res) => {
   res.status(404).sendFile(path.join(publicDir, 'index.html'));
 });
 
-// Jalankan Server pada HOST 0.0.0.0 agar dapat diakses dari IP VPS langsung
-app.listen(PORT, HOST, () => {
-  console.log('========================================================');
-  console.log('🍗 HISANA FRIED CHICKEN - PORTAL LAMARAN KERJA CIREBON 🍗');
-  console.log(`🚀 Server aktif di: http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}`);
-  console.log(`🌐 Akses dari luar (VPS): http://<IP_VPS_ANDA>:${PORT}`);
-  console.log(`📁 Static Root: ${publicDir}`);
-  console.log(`🔒 Mode: ${process.env.NODE_ENV || 'development'} | Force HTTPS: ${forceHttps}`);
-  console.log('========================================================');
-});
+// Jalankan Server saat dijalankan langsung (Local / VPS), bukan saat diimpor oleh Vercel Serverless
+if (!process.env.VERCEL) {
+  app.listen(PORT, HOST, () => {
+    console.log('========================================================');
+    console.log('🍗 HISANA FRIED CHICKEN - PORTAL LAMARAN KERJA CIREBON 🍗');
+    console.log(`🚀 Server aktif di: http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}`);
+    console.log(`🌐 Akses dari luar (VPS): http://<IP_VPS_ANDA>:${PORT}`);
+    console.log(`📁 Static Root: ${publicDir}`);
+    console.log(`🔒 Mode: ${process.env.NODE_ENV || 'development'} | Force HTTPS: ${forceHttps}`);
+    console.log('========================================================');
+  });
+}
+
+module.exports = app;

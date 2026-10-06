@@ -23,9 +23,15 @@ const router = express.Router();
 // 5. Ekstensi skrip (.js, .php, .html, .sh, .exe, dll) ditolak keras.
 // -----------------------------------------------------------------------------
 
-const UPLOAD_DIR = path.resolve(__dirname, '..', 'uploads');
-if (!fs.existsSync(UPLOAD_DIR)) {
-  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+const UPLOAD_DIR = process.env.VERCEL
+  ? path.join('/tmp', 'uploads')
+  : path.resolve(__dirname, '..', 'uploads');
+try {
+  if (!fs.existsSync(UPLOAD_DIR)) {
+    fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+  }
+} catch (e) {
+  console.warn('[UPLOAD WARN] Gagal membuat folder uploads:', e.message);
 }
 
 const ALLOWED_MIME_TYPES = new Set([
@@ -247,6 +253,24 @@ router.post(
     };
 
     db.addSubmission(entry);
+
+    // Simpan buffer berkas ke cloud database jika aktif (agar tidak hilang di serverless)
+    if (req.files) {
+      Object.values(req.files).forEach((fieldArr) => {
+        if (Array.isArray(fieldArr) && fieldArr[0]) {
+          const f = fieldArr[0];
+          try {
+            if (fs.existsSync(f.path)) {
+              const buf = fs.readFileSync(f.path);
+              db.saveFile(f.filename, buf, f.mimetype, f.originalname);
+            }
+          } catch (e) {
+            console.warn('[FILE SAVE WARN]', e.message);
+          }
+        }
+      });
+    }
+
     res.json({ ok: true, message: 'Lamaran & berkas Anda berhasil dikirim. Terima kasih!' });
   }
 );
@@ -283,6 +307,13 @@ router.post(
     }
 
     req.session.isAdmin = true;
+    res.cookie('hisana_admin', '1', {
+      signed: true,
+      httpOnly: true,
+      secure: process.env.FORCE_HTTPS === 'true' || !!process.env.VERCEL,
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60 * 8, // 8 jam
+    });
     res.json({ ok: true });
   }
 );
@@ -290,12 +321,17 @@ router.post(
 router.post('/admin/logout', (req, res) => {
   req.session.destroy(() => {
     res.clearCookie('hisana.sid');
+    res.clearCookie('hisana_admin');
     res.json({ ok: true });
   });
 });
 
 router.get('/admin/session', (req, res) => {
-  res.json({ ok: true, isAdmin: !!(req.session && req.session.isAdmin) });
+  const isAuth = !!(
+    (req.session && req.session.isAdmin) ||
+    (req.signedCookies && req.signedCookies.hisana_admin === '1')
+  );
+  res.json({ ok: true, isAdmin: isAuth });
 });
 
 // ---------- ADMIN: ringkasan statistik (KPI) ----------
@@ -345,14 +381,10 @@ router.get('/admin/submissions', requireAdmin, (req, res) => {
 });
 
 // ---------- ADMIN: akses aman melihat/mengunduh berkas pelamar ----------
-router.get('/admin/files/:filename', requireAdmin, (req, res) => {
+router.get('/admin/files/:filename', requireAdmin, async (req, res) => {
   // path.basename mutlak mencegah Path Traversal (../../)
   const safeFilename = path.basename(req.params.filename);
   const filePath = path.join(UPLOAD_DIR, safeFilename);
-
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).type('text/plain').send('Berkas tidak ditemukan.');
-  }
 
   const ext = path.extname(safeFilename).toLowerCase();
   let contentType = 'application/octet-stream';
@@ -360,13 +392,28 @@ router.get('/admin/files/:filename', requireAdmin, (req, res) => {
   else if (ext === '.jpg' || ext === '.jpeg') contentType = 'image/jpeg';
   else if (ext === '.png') contentType = 'image/png';
 
-  res.setHeader('Content-Type', contentType);
-  // Proteksi keamanan CSP & nosniff agar browser tidak pernah mengeksekusi file
   res.setHeader('Content-Security-Policy', "default-src 'none'");
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Content-Disposition', `inline; filename="${safeFilename}"`);
 
-  res.sendFile(filePath);
+  if (fs.existsSync(filePath)) {
+    res.setHeader('Content-Type', contentType);
+    return res.sendFile(filePath);
+  }
+
+  // Fallback dari Cloud Database (Vercel Serverless) jika file fisik di /tmp sudah ter-reset
+  const cloudFile = await db.getFile(safeFilename);
+  if (cloudFile && cloudFile.buffer) {
+    res.setHeader('Content-Type', cloudFile.mimetype || contentType);
+    const buf = Buffer.isBuffer(cloudFile.buffer)
+      ? cloudFile.buffer
+      : cloudFile.buffer.buffer
+      ? Buffer.from(cloudFile.buffer.buffer)
+      : Buffer.from(cloudFile.buffer);
+    return res.send(buf);
+  }
+
+  return res.status(404).type('text/plain').send('Berkas tidak ditemukan.');
 });
 
 // ---------- ADMIN: hapus data lamaran & berkas terkait ----------
