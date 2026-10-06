@@ -174,7 +174,7 @@ router.post(
     });
   },
   submitValidators,
-  (req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       cleanupUploadedFiles(req.files);
@@ -252,23 +252,31 @@ router.post(
       submittedAt: new Date().toISOString(),
     };
 
-    db.addSubmission(entry);
+    await db.addSubmission(entry);
 
     // Simpan buffer berkas ke cloud database jika aktif (agar tidak hilang di serverless)
     if (req.files) {
+      const savePromises = [];
       Object.values(req.files).forEach((fieldArr) => {
         if (Array.isArray(fieldArr) && fieldArr[0]) {
           const f = fieldArr[0];
           try {
             if (fs.existsSync(f.path)) {
               const buf = fs.readFileSync(f.path);
-              db.saveFile(f.filename, buf, f.mimetype, f.originalname);
+              savePromises.push(db.saveFile(f.filename, buf, f.mimetype, f.originalname));
             }
           } catch (e) {
             console.warn('[FILE SAVE WARN]', e.message);
           }
         }
       });
+      if (savePromises.length > 0) {
+        try {
+          await Promise.all(savePromises);
+        } catch (e) {
+          console.warn('[FILE PROMISE WARN]', e.message);
+        }
+      }
     }
 
     res.json({ ok: true, message: 'Lamaran & berkas Anda berhasil dikirim. Terima kasih!' });
@@ -405,11 +413,18 @@ router.get('/admin/files/:filename', requireAdmin, async (req, res) => {
   const cloudFile = await db.getFile(safeFilename);
   if (cloudFile && cloudFile.buffer) {
     res.setHeader('Content-Type', cloudFile.mimetype || contentType);
-    const buf = Buffer.isBuffer(cloudFile.buffer)
-      ? cloudFile.buffer
-      : cloudFile.buffer.buffer
-      ? Buffer.from(cloudFile.buffer.buffer)
-      : Buffer.from(cloudFile.buffer);
+    let buf;
+    if (Buffer.isBuffer(cloudFile.buffer)) {
+      buf = cloudFile.buffer;
+    } else if (cloudFile.buffer && cloudFile.buffer._bsontype === 'Binary' && typeof cloudFile.buffer.value === 'function') {
+      buf = cloudFile.buffer.value(true);
+    } else if (cloudFile.buffer && cloudFile.buffer.buffer) {
+      buf = Buffer.from(cloudFile.buffer.buffer);
+    } else if (cloudFile.buffer && typeof cloudFile.buffer.read === 'function') {
+      buf = cloudFile.buffer.read(0, cloudFile.buffer.length());
+    } else {
+      buf = Buffer.from(cloudFile.buffer);
+    }
     return res.send(buf);
   }
 

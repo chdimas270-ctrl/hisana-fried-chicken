@@ -13,6 +13,7 @@ let inMemorySettings = { pria: true, wanita: true };
 let mongoClient = null;
 let mongoDb = null;
 let isInitialized = false;
+let connectPromise = null;
 
 function ensureFile(file, defaultValue) {
   if (!fs.existsSync(file)) {
@@ -57,7 +58,9 @@ function getMongoUri() {
 
 async function connectMongo() {
   const uri = getMongoUri();
-  if (!uri) return;
+  if (!uri) return null;
+  if (mongoDb) return mongoDb;
+
   try {
     mongoClient = new MongoClient(uri, { serverSelectionTimeoutMS: 5000 });
     await mongoClient.connect();
@@ -82,9 +85,24 @@ async function connectMongo() {
       inMemorySubmissions = remoteSubmissions.map(({ _id, ...rest }) => rest);
       writeJSONAtomic(SUBMISSIONS_FILE, inMemorySubmissions);
     }
+    return mongoDb;
   } catch (err) {
     console.warn('⚠️ [DATABASE] Gagal konek MongoDB, beroperasi dengan file lokal/tmp:', err.message);
+    return null;
   }
+}
+
+async function ensureMongoConnected() {
+  if (mongoDb) return mongoDb;
+  const uri = getMongoUri();
+  if (!uri) return null;
+
+  if (!connectPromise) {
+    connectPromise = connectMongo().finally(() => {
+      connectPromise = null;
+    });
+  }
+  return await connectPromise;
 }
 
 function init() {
@@ -119,13 +137,16 @@ function setSettings(partial) {
   inMemorySettings = { ...inMemorySettings, ...partial };
   writeJSONAtomic(SETTINGS_FILE, inMemorySettings);
 
-  if (mongoDb) {
-    mongoDb.collection('settings').updateOne(
-      { _id: 'global' },
-      { $set: inMemorySettings },
-      { upsert: true }
-    ).catch(e => console.error('[DB ERROR setSettings]', e.message));
-  }
+  ensureMongoConnected().then((db) => {
+    if (db) {
+      db.collection('settings').updateOne(
+        { _id: 'global' },
+        { $set: inMemorySettings },
+        { upsert: true }
+      ).catch(e => console.error('[DB ERROR setSettings]', e.message));
+    }
+  });
+
   return inMemorySettings;
 }
 
@@ -134,12 +155,18 @@ function listSubmissions() {
   return inMemorySubmissions;
 }
 
-function addSubmission(entry) {
+async function addSubmission(entry) {
   inMemorySubmissions.push(entry);
   writeJSONAtomic(SUBMISSIONS_FILE, inMemorySubmissions);
 
-  if (mongoDb) {
-    mongoDb.collection('submissions').insertOne({ ...entry }).catch(e => console.error('[DB ERROR addSubmission]', e.message));
+  const db = await ensureMongoConnected();
+  if (db) {
+    try {
+      await db.collection('submissions').insertOne({ ...entry });
+      console.log(`[DB] Berhasil menyimpan formulir ${entry.namaLengkap} ke MongoDB!`);
+    } catch (e) {
+      console.error('[DB ERROR addSubmission]', e.message);
+    }
   }
   return entry;
 }
@@ -149,9 +176,12 @@ function deleteSubmission(id) {
   inMemorySubmissions = inMemorySubmissions.filter((s) => s.id !== id);
   writeJSONAtomic(SUBMISSIONS_FILE, inMemorySubmissions);
 
-  if (mongoDb) {
-    mongoDb.collection('submissions').deleteOne({ id }).catch(e => console.error('[DB ERROR deleteSubmission]', e.message));
-  }
+  ensureMongoConnected().then((db) => {
+    if (db) {
+      db.collection('submissions').deleteOne({ id }).catch(e => console.error('[DB ERROR deleteSubmission]', e.message));
+    }
+  });
+
   return inMemorySubmissions.length !== prevLen;
 }
 
@@ -159,15 +189,17 @@ function getSubmission(id) {
   return inMemorySubmissions.find((s) => s.id === id) || null;
 }
 
-// --- Penyimpanan Berkas ke MongoDB Cloud (Opsional untuk Vercel) ---
+// --- Penyimpanan Berkas ke MongoDB Cloud (Vercel Serverless Persistent) ---
 async function saveFile(filename, buffer, mimetype, originalName) {
-  if (mongoDb) {
+  const db = await ensureMongoConnected();
+  if (db) {
     try {
-      await mongoDb.collection('files').updateOne(
+      await db.collection('files').updateOne(
         { filename },
         { $set: { filename, buffer, mimetype, originalName, uploadedAt: new Date() } },
         { upsert: true }
       );
+      console.log(`[DB] Berkas ${filename} berhasil disimpan ke MongoDB Cloud!`);
     } catch (e) {
       console.error('[DB ERROR saveFile]', e.message);
     }
@@ -175,9 +207,10 @@ async function saveFile(filename, buffer, mimetype, originalName) {
 }
 
 async function getFile(filename) {
-  if (mongoDb) {
+  const db = await ensureMongoConnected();
+  if (db) {
     try {
-      return await mongoDb.collection('files').findOne({ filename });
+      return await db.collection('files').findOne({ filename });
     } catch (e) {
       console.error('[DB ERROR getFile]', e.message);
     }
@@ -187,6 +220,7 @@ async function getFile(filename) {
 
 module.exports = {
   init,
+  ensureMongoConnected,
   getSettings,
   setSettings,
   listSubmissions,
