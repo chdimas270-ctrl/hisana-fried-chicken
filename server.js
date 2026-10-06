@@ -13,7 +13,7 @@ db.init();
 
 const app = express();
 const PORT = parseInt(process.env.PORT, 10) || 3000;
-const HOST = process.env.HOST || '0.0.0.0';
+const HOST = process.env.IP || process.env.HOST || '0.0.0.0';
 const isProduction = process.env.NODE_ENV === 'production';
 const forceHttps = process.env.FORCE_HTTPS === 'true';
 
