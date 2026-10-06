@@ -45,8 +45,18 @@ function writeJSONAtomic(file, data) {
   }
 }
 
+function getMongoUri() {
+  return (
+    process.env.MONGODB_URI ||
+    process.env.MONGODB_URL ||
+    process.env.STORAGE_URL ||
+    process.env.DATABASE_URL ||
+    ''
+  );
+}
+
 async function connectMongo() {
-  const uri = process.env.MONGODB_URI;
+  const uri = getMongoUri();
   if (!uri) return;
   try {
     mongoClient = new MongoClient(uri, { serverSelectionTimeoutMS: 5000 });
@@ -91,8 +101,8 @@ function init() {
     isInitialized = true;
   }
 
-  // Hubungkan ke MongoDB di background jika MONGODB_URI tersedia
-  if (process.env.MONGODB_URI && !mongoDb) {
+  // Hubungkan ke MongoDB di background jika URI tersedia
+  if (getMongoUri() && !mongoDb) {
     connectMongo().catch(() => {});
   }
 }
